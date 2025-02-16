@@ -1,0 +1,25 @@
+
+{% if festival_is_active or festival_is_not_active_and_was_not_done %}
+<a href="/festival_users/" class="btn btn-success form-control">نمایش رتبه بندی کاربران در {{ festival.name }}</a>
+{% endif %}
+{% if festival_is_not_active_and_was_not_done and calc_festival_chance_digits%}
+<a href="/media/    /{{ festival_excel_file_name }}.xlsx" class="btn btn-dark ">دانلود فایل اکسل</a>
+<a href="/do_lottery/" class="btn btn-dark ">انجام قرعه کشی</a>
+{% endif %}
+
+<a class="btn btn-blue"  href="/register/">ثبت نام کاربر جدید</a>
+<a class="btn btn-orange"  href="/profile/{{ request_user.referral_code }}">پروفایل</a>
+
+
+<a class="btn btn-dark" href="/user_list/" >لیست کاربران</a>
+
+<a href="/last_user_table/{{request_user.id_card_num}}/" class="btn btn-dark">آخرین کارت وفاداری</a>
+<a href="/user_invites/{{request_user.id_card_num}}/" class="btn btn-dark">نمایش کاربران معرفی شده</a>
+
+<a style="color: #fff;" class="btn btn-dark"  id="affliate-link-btn" data-bs-toggle="tooltip" title="کپی شد!" data-bs-trigger="manual" data-bs-placement="top" data-referral-code="cc.bartardigital.com/register?ref={{user.referral_code}}"> لینک دعوت شما</a>
+
+<button id='auto_stamp' class="btn btn-success">مهر زنی اتوماتیک</button>
+<a class="btn btn-dark"  href="/sms_logs/">گزارشات ارسال پیامک</a>
+
+<a class="btn btn-red"  href="/logout/">خروج</a>
+

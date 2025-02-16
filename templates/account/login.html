@@ -1,0 +1,217 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+	ورود |‌ سیستم وفاداری مشتریان برتر دیجیتال
+{% endblock %}
+
+
+
+	{% block content %}	
+
+	<!-- <style>
+        body{
+            height: 100vh;
+        } 
+        .container{
+            height: 100%;
+        }
+    </style> -->
+
+	{% include 'header.html' %}
+
+
+				
+
+
+	
+	<link rel="stylesheet" type="text/css" href="{%static 'css/vafadar/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/fonts/iconic/css/material-design-iconic-font.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/vendor/css-hamburgers/hamburgers.min.css' %}">
+
+
+
+	<main  >
+
+
+			<div class="container text-center"> 
+				{% if request_user.is_staff and not request_user.is_superuser %}		
+				<div class="row pt-4 mt-4">
+					<div class="col-12">
+						<section class="box-simple my-article p-3 mb-4">
+							<!--admin controls:-->
+							<div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center">
+								{% include 'admin_buttons.html'%}
+		
+							</div>
+		
+																		
+		
+						</section>
+					</div>
+		
+				</div>
+				{% elif request_user.is_superuser %}
+			
+					<div class="row pt-4 mt-4">
+						<div class="col-12">
+							<section class="box-simple my-article p-3 mb-4">
+								<!--admin controls:-->
+								<div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center">
+									{% include 'super_user_buttons.html'%}
+								</div>
+					
+																			
+					
+							</section>
+						</div>
+					
+					</div>
+				
+				{% endif %}
+
+					<div class="container d-flex align-items-center justify-content-center pt-4" >
+							<div class="wrap-login100 mb-4 blog-article login-form mw-100" style="text-align:right; direction: ltr;">
+								<form class="login100-form validate-form" method="post"  action="{% url 'login' %}">
+									{% csrf_token %}
+									<span class="login100-form-title mb-5 p-t-10 p-b-10">
+									 	ورود
+									</span>
+					
+									<div  {% if form.username.errors %} class="if-error" {% else %} class="wrap-input100 validate-input" {% endif%}  data-validate = "Enter username">
+										{{ form.username }}
+										{% for error in form.username.errors %}
+										<span class="error">{{ error }}</span>
+										{% endfor %}
+										<span class="focus-input100-login" placeholder=": موبایل"></span>
+									</div>
+					
+					
+									<div {% if form.password.errors %} class="if-error" {% else %} class="wrap-input100 validate-input" {% endif%}  data-validate="Enter password">
+										<span class="btn-show-pass">
+											<i class="zmdi zmdi-eye"></i>
+										</span>
+										{{ form.password }}
+										{% for error in form.password.errors %}
+											<span class="error">{{ error }}</span>
+											{% endfor %}
+										<span class="focus-input100-login"   placeholder=": رمز"></span>
+									</div>
+					
+			
+					
+									<div class="container-login100-form-btn">
+										<div class="wrap-login100-form-btn">
+											<div class="login100-form-bgbtn"></div>
+											<button type="submit" value="Submit" class="login100-form-btn btn-blue">
+												تایید
+											</button>
+					
+										</div>
+									</div>
+			
+									<div class="container-login100-form-btn mt-2">
+										<div class="wrap-login100-form-btn">
+											<div class="login100-form-bgbtn"></div>
+											<a href="/register/"  class="login100-form-btn btn-green">
+												ثبت نام
+											</a>
+					
+										</div>
+									</div>
+			
+					
+									{% if messages %}
+									<ul class="messages mt-4">
+										{% for message in messages %}
+									
+										<li {% if message.tags %} class="alert alert-{% if message.tags == 'error' %}danger {% else %}{{ message.tags }}{% endif %}"{% endif %}>{{ message }}</li>
+										{% endfor %}
+									</ul>
+										{% if  verify_link %}
+										<div class="text-center p-t-10">
+											<span class="txt1">
+											</span>
+						
+											<a class="txt2" href="{{verify_link}}">
+												تایید شماره
+											</a>
+										</div>
+										{% endif %}
+						
+									{% endif %}
+					
+						
+								</form>
+							</div>
+		
+					</div>
+			</div>
+		
+		
+	
+		<div id="dropDownSelect1"></div>
+		
+	</main>
+
+	<div class="container" style="line-height: 2rem;">
+	    <style>
+        .list-group-numbered>li::before{
+            font-size: larger;
+            color: red;
+        }
+        ol li{
+            margin-bottom:10px;
+        }
+        </style>
+        <div class="row">
+    		<div class="col-12">
+    			<section class="box-simple my-article p-3 mb-4">
+    				<h2 class="mb-3">روشهای مهر خوردن کارت وفاداری آنلاین:</h2>
+    				<ol class="list-group list-group-numbered">
+    					<li>
+    						<strong>خرید از برتر دیجیتال:</strong> برای هر خرید بالای ۵۰۰٫۰۰۰ تومان کارتتون مهر میخوره.
+    					</li>
+    					<li><strong>عکس از مشتری و محصول:</strong> هنگام خرید به درخواست شما یه عکس از شما به همراه محصول خریداری شده گرفته میشه. برای خریدهای غیر حضوری هم تا دو هفته پس از خرید وقت دارید یه عکس از خودتون و محصول خریداری شده بگیرید و برامون در دایرکت اینستاگرام به همراه اسم و کد ملیتون بفرستید. این عکس در پیج برتر دیجیتال استوری میشه و یه مهر به کارت وفاداریتون زده میشه.</li>
+    					
+    					<li><strong>فالو در فضای مجازی (اینستاگرام و تلگرام):</strong> پیج برتر دیجیتال رو در تلگرام و اینستاگرام فالو کنید و اسم و کد ملیتون و id تلگرامتون رو از طریق دایرکت اینستاگرام بفرستید تا کارتتون مهر بخوره. (فقط ۱ مهر)</li>
+    					
+    					<li><strong>ثبت نظر مفید برای محصول خریداری شده در سایت:</strong> بعد از اینکه از محصول خریداری شده استفاده کردید نظر واقعی خودتون رو در قسمت کامنتها در صفحه محصول خریداری شده در سایت برتر دیجیتال ثبت کنید. سعی کنید نظری که ثبت میکنید برای دیگران که قصد خرید این محصول رو دارند مفید باشه. سپس یک پیام در دایرکت اینستاگرام بفرستید و بگید که کامنت نوشتید و اسم و کد ملیتون رو هم بنویسید تا کارتتون مهر بخوره. دقت کنید که فقط تا دو هفته بعد از خرید فرصت دارید.</li>
+    					
+    					<li><strong>منشن کردن پیج برتر دیجیتال در استوری اینستاگرام (۲ مهر):</strong> یه استوری با هر موضوعی در اینستاگرام بزنید و پیج ما رو منشن بفرمایید. استوری شما میتونه هر چیزی باشه؛ مثلا از محصولی که خریدین عکس بزارید یا یکی از ریلزهای ما رو استوری کنید. پس از گذشت ۲۰ ساعت یه اسکرین شات از استوریتون به همراه اسم و کد ملیتون به دایرکت برتر دیجیتال بفرستید تا کارتتون ۲ تا مهر بخوره. دقت کنید که فقط یک بار (۲مهر) از این طریق میتونید کسب کنید.</li>
+    					
+    					<li><strong>معرفی مشتری جدید:</strong> لینک دعوت مخصوص خودتون رو از داخل پنل سیستم وفاداری برتر دیجیتال بردارید و به آشنایانتون بفرستید. وقتی دوستانتون از طریق این لینک ثبت نام کنن، شما به عنوان معرفشان در سیستم ثبت میشید و وقتی هر کدوم از اونها اولین خریدشون رو انجام بدن، به طور خودکار کارت وفاداری شما هم مهر میخوره. همچنین در داخل پنل از قسمت کاربران معرفی شده میتونید لیست افرادی که معرفی کردید رو هم ببینید. روش دیگرش هم اینه که هر وقت مشتری جدید بهمون معرفی کردید تا دو هفته بعد از خریدشون فرصت دارید تا پیام بدید یا تلفنی اعلام کنید تا ما به صورت دستی به کارتتون مهر بزنیم.</li>
+    					
+    					<li><strong>ثبت نظر در گوگل مپ: </strong> در گوگل مپ، bartardigital رو سرچ کنید و اگه از ما راضی بودید یه نظر (Review) اونجا برامون ثبت کنید. یه اسکرین شات ازش بگیرید و به همراه کد ملیتون در دایرکت اینستاگرام به ما بفرستید تا کارتتون مهر بخوره. (فقط ۱ مهر)</li>
+    					
+    				</ol >
+    			</section>
+    		</div>
+		</div>
+	</div>
+	{% include 'footer.html' %}
+		<script src="{% static 'css/vafadar/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+		
+			<script src="{% static 'js/vafadar/main.js' %}"></script>
+	{% endblock content %}
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

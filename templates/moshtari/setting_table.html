@@ -1,0 +1,409 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load jalali_tags %}
+
+{% block title %} تنظیمات کارت | سیستم وفاداری مشتریان برتر دیجیتال {% endblock title %}
+
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/vendor/daterangepicker/daterangepicker.css' %}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/fonts/iconic/css/material-design-iconic-font.min.css' %}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/vendor/animate/animate.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/vendor/css-hamburgers/hamburgers.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/vendor/animsition/css/animsition.min.css' %}">
+	<!--===============================================================================================-->
+	<!-- <link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/vendor/select2/select2.min.css' %}"> -->
+	{% include 'header.html' %}
+
+
+	<main>
+		<div class="container pt-4">
+			<div class="row u-columns col2-set">
+				<div class="col-12">
+					<section class="box-simple my-article p-3 mb-4">
+						<!--admin controls:-->
+						<div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center">
+						
+						{% if request_user.is_superuser %}
+							{% include 'super_user_buttons.html' %}
+						{% elif request_user.is_staff and not user.is_superuser %}
+							{% include 'admin_buttons.html' %}
+						{% endif %}
+						</div>
+	
+
+					</section>
+				</div>
+		   
+			</div>
+
+		</div>
+
+		
+		{% if messages %}
+		<div class="container pt-4 mb-4">
+			<div class="woocommerce-notices-wrapper"></div>
+			<div class="row ">
+				<!-- <ul class="messages"> -->
+					{% for message in messages %}
+					
+					<div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+	
+				   {{ message }}
+					</div>
+					{% endfor %}
+					
+					
+				</div>
+		</div>
+		{% endif %} 
+			
+			
+			
+			
+		<div class="container pt-4">
+				<div class="row ">
+				
+				<div class="col-sm mb-3">
+					<div class="box-simple p-5 blog-article login-form ">
+						<form class="login100-form validate-form" method="post" >
+							{% csrf_token %}
+							<span class="login100-form-title p-b-26">
+								افزودن دلیل مهر
+							</span>
+		
+							<span class="login100-form-title  p-b-48">
+								<i class="zmdi zmdi-label  " style="color: #4377bf"></i>
+							</span>
+		
+							{% for error in form.non_field_errors %}
+							<span class="error">{{ error }}</span>
+							{% endfor %}
+											
+		
+		
+							
+							<div  {% if form1.reason.errors %} class="if-error" {% else %} class="wrap-input100 " {% endif%} >
+								{{ form1.reason }}
+								{% for error in form1.reason.errors %}
+								<span class="error">{{ error }}</span>
+								{% endfor %}
+								<span class="focus-input100-login" placeholder="دلیل مهر :"></span>
+							</div>
+		
+							<div  {% if form1.limit.errors %} class="if-error" {% else %} class="wrap-input100 " {% endif%} >
+								{{ form1.limit }}
+								{% for error in form1.limit.errors %}
+								<span class="error">{{ error }}</span>
+								{% endfor %}
+								<span class="focus-input100-login" placeholder="حداکثر تعداد مهر :"></span>
+							</div>
+		
+							
+							<div class="container-login100-form-btn">
+								<div class="wrap-login100-form-btn">
+									<div class="login100-form-bgbtn"></div>
+									<button type="submit"  class="login100-form-btn btn-blue" name="button" value="reason">
+										ذخیره دلیل
+									</button>
+		
+								</div>
+							</div>
+		
+
+						</form>
+					</div>
+				</div>
+
+				<div class="col-sm">
+					<div class="box-simple p-5 blog-article login-form mb-3 ">
+						<form class="login100-form validate-form" method="post" >
+							{% csrf_token %}
+							<span class="login100-form-title p-b-26 ">
+								تنظیمات کارت
+							</span>
+	
+							<span class="login100-form-title  p-b-48">
+								<i class="zmdi zmdi-settings zmdi-hc-spin " style="color: #9e9e9e"></i>
+							</span>
+	
+							{% for error in form.non_field_errors %}
+							<span class="error">{{ error }}</span>
+							{% endfor %}
+											
+							
+							<div  {% if form.row_number.errors %} class="if-error" {% else %} class="wrap-input100" {% endif%} >
+								{{ form.row_number }}
+								{% for error in form.row_number.errors %}
+								<span class="error">{{ error }}</span>
+								{% endfor %}
+								<span class="focus-input100-login" placeholder="تعداد سطر :"></span>
+							</div>
+	
+							<div {% if form.column_number_per_row.errors %} class="if-error" {% else %} class="wrap-input100" {% endif%}  >
+	
+								{{ form.column_number_per_row }}
+								{% for error in form.column_number_per_row.errors %}
+									<span class="error">{{ error }}</span>	
+									{% endfor %}
+								<span class="focus-input100-login" placeholder="تعداد ستون در هر سطر :"></span>
+							</div>
+	
+							<div {% if form.price_of_each_row.errors %} class="if-error" {% else %} class="wrap-input100" {% endif%}  >
+	
+								{{ form.price_of_each_row }}
+								{% for error in form.price_of_each_row.errors %}
+								<span class="error">{{ error }}</span>
+								{% endfor %}
+								<span class="focus-input100-login" placeholder="جایزه هر سطر :"></span>
+							</div>
+	
+							<div {% if form.last_row_value.errors %} class="if-error" {% else %} class="wrap-input100" {% endif%} >
+	
+								{{ form.last_row_value }}
+								{% for error in form.last_row_value.errors %}
+								<span class="error">{{ error }}</span>
+								{% endfor %}
+								<span class="focus-input100-login" placeholder="جایزه سطر آخر : "></span>
+							</div>
+							
+	
+							<div class="container-login100-form-btn">
+								<div class="wrap-login100-form-btn">
+									<div class="login100-form-bgbtn"></div>
+									<button type="submit"  class="login100-form-btn btn-blue" name="button" value="setting_table">
+										ثبت تنظیمات
+									</button>
+	
+								</div>
+								
+							</div>
+							
+	
+	
+	
+						</form>
+					</div>
+				
+				</div>	
+
+
+				{% if  festival_is_not_active_and_was_not_done %}
+				<div class="col-sm mb-3 " style=" text-align: right; ">
+
+					<div class="container-login100-form-btn">
+						{% if not calc_festival_chance_digits %}
+						<div class="box-simple p-5 blog-article login-form mb-3">
+									
+							<div class="container-login100-form-btn">
+								<form method="post">
+									<div class="wrap-login100-form-btn mb-3 ">
+										<div class="login100-form-bgbtn "></div>
+										<a  target="_blank" href="/admin/moshtari/festival/{{ festival.id }}/change/" class="login100-form-btn btn-orange" name="button" >
+											کنترل نهایی جویز و برندگان
+										</a>
+									
+										
+									</div>
+									<div class="wrap-login100-form-btn">
+										<div class="login100-form-bgbtn"></div>
+									
+										<button type="submit"  class="login100-form-btn btn-blue" name="button" value="calc_users_chance_num_list">
+											محاسبه عدد شانس هر کاربر   
+										</button>
+									
+										
+									</div>
+								</form>
+							</div>
+						</div>
+						{% endif %}
+
+					</div>
+
+				</div>
+				{% endif %}
+
+
+			
+				{% if festival_is_not_active_and_was_done and not festival_is_active or show_form %}
+				<div class="col-sm mb-3 " >
+					
+					<div class="box-simple p-5 blog-article login-form mb-3">
+						<form class="login100-form validate-form festival_form" method="post" >
+							{% csrf_token %}
+							<div class="mb-3">
+								<label class="mb-1 " for="id_name">نام جشنواره :</label>
+								{{ festival_form.name}}
+								{% for error in festival_form.name.errors %}
+								<span class="error">{{ error }}</span>
+								{% endfor %}
+							</div>
+
+							<div  class="mb-3">
+								<label class="mb-1 " for="id_start_date">تاریخ شروع:</label>
+								{{ festival_form.start_date }}
+								{% for error in festival_form.start_date.errors %}
+								<span class="error">{{ error }}</span>
+								{% endfor %}
+							</div>
+							
+
+							<div  class="mb-3">			
+								<label class="mb-1 " for="id_end_date">تاریخ پایان:</label>
+								{{ festival_form.end_date }}
+								{% for error in festival_form.end_date.errors %}
+								<span class="error">{{ error }}</span>
+								{% endfor %}
+							</div>
+
+							<div  class="mb-3">
+								<label class="mb-1 " for="id_min_stamp">حداقل مهر :</label>	
+								{{ festival_form.min_stamp }}
+								{% for error in festival_form.min_stamp.errors %}
+								<span id="" class="error">{{ error }}</span>
+								{% endfor %}
+							</div>
+							<div  class="mb-3">
+								<label class="mb-1 " for="id_min_stamp">لینک توضیحات  :</label>	
+								{{ festival_form.description_link }}
+								{% for error in festival_form.description_link.errors %}
+								<span id="" class="error">{{ error }}</span>
+								{% endfor %}
+							</div>
+
+
+							<div  class="mb-3" >
+								<div class="row  border border-success border-2 rounded-3 p-2">
+									<div class="col-sm-6">
+										<label class="mb-1 " for="id_number_of_winners">تعداد برندگان جشنواره :</label>	
+	
+										{{ festival_festival_form.number_of_winners }}
+										{{ festival_form.number_of_winners }}
+										{% for error in festival_form.number_of_winners.errors %}
+										<span class="error">{{ error }}</span>
+										{% endfor %}
+	
+									</div>
+									<div class="col-sm-5 text-center align-self-center">
+												
+												<button id="winner_from_creator" onclick="addPrizeInput(this)" type="button" class="btn btn-success " name="button" value="number_of_winners">
+														ایجاد فرم ثبت جایزه برندگان 
+												</button>
+					
+											
+									</div>
+									<div id="prize_container" class="mb-1">
+		
+									</div>
+								</div>
+							</div>
+
+							
+
+							<div class="container-login100-form-btn mt-3 mb-3">
+								<div class="wrap-login100-form-btn">
+									<div class="login100-form-bgbtn"></div>
+									<button  onclick="collectPrzeOfWinners(this)" type="submit" class="login100-form-btn btn-blue " name="button" value="festival">
+										ثبت جشنواره
+									</button>
+		
+								</div>
+							</div>
+
+							<div>
+								{{ festival_form.winners_prizes }}
+								{% for error in festival_form.winners_prizes.errors %}
+								<div id="" class="alert alert-danger">{{ error }}</div>
+								{% endfor %}
+							</div>
+							
+
+						</form>
+					</div>	
+					
+					
+				
+				</div>
+				{% endif %}
+				
+			</div>
+		</div>
+	
+	</main>
+	
+	{% include 'footer.html' %}
+
+
+	<!--===============================================================================================-->	
+<script src="{% static 'css/vafadar/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'css/vafadar/vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'css/vafadar/vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'css/vafadar/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'css/vafadar/vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'css/vafadar/vendor/daterangepicker/moment.min.js' %}"></script>
+	<script src="{% static 'css/vafadar/vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'css/vafadar/vendor/countdowntime/countdowntime.js' %}"></script>
+
+	<script>
+
+		const winnerPrizesListInput = document.getElementById('id_winners_prizes')
+		const prizeContainer = document.getElementById('prize_container')
+		const addPrizeInput = function(button){
+					"use static"
+
+			 // toEnglishDigits come from base.htlm 
+			let numberOFWinners = toEnglishDigits(document.getElementById('id_number_of_winners').value)
+			if (!numberOFWinners || !Number.isFinite(+numberOFWinners)) return
+			for(let i = 0; i < numberOFWinners; i++){
+				
+				const prizeInput = `<div class="mb-2"> <label class="mb-1 " for="input-${i + 1}">جایزه نفر ${i + 1} :</label>	
+									<input  class="form-control" id="input-${i + 1}"> 
+				</div>`
+				prizeContainer.insertAdjacentHTML('beforeend' , prizeInput)
+			}
+			button.disabled = true
+			const deleteBtn = '<div class=""><button onclick="removePrizes()" type="button" class="btn btn-danger form-control" name="button" value="number_of_winners">پاک کردن فورم ها</button></div>'
+			prizeContainer.insertAdjacentHTML('beforeend' , deleteBtn)
+
+
+		}
+
+		const removePrizes = function(){
+			prizeContainer.innerHTML = ''
+			const button = document.getElementById('winner_from_creator').disabled = false
+
+		}
+
+		const collectPrzeOfWinners = function(button){
+			const prizeInputs = prizeContainer.querySelectorAll('input')
+			/* In follow code , reduce() is used to transform the array of 
+			inputs into an object where the keys are i + 1 and the values are the input values.
+			 The initial value for the accumulator is an empty object {} */
+			const PrizeValues = Array.from(prizeInputs).reduce((acc, input, i) => {
+				acc[i + 1] = input.value;
+				return acc;
+			}, {});
+			// const PrizeValues = Array.from(prizeInputs).map((x, i)=> `${i + 1}_${x.value}` )
+			console.log(PrizeValues)
+			winnerPrizesListInput.value = JSON.stringify(PrizeValues);
+
+		}
+	</script>
+
+{% endblock content %}
+
+
+
+

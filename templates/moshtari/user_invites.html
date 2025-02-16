@@ -1,0 +1,94 @@
+{% extends 'base.html'%}
+{% load static %}
+{% load custom_tag %}
+{% load tz %}
+
+{% block title %}
+      لیست دعوت ها |‌ سیستم وفاداری مشتریان برتر دیجیتال
+{% endblock title%}
+
+
+{% block content %}
+<style>
+    html{
+        height: 100%;
+    }
+    body{
+        min-height: 100%;
+    } 
+
+</style>
+{% include 'header.html' %}
+    <main style="height: 90%">
+        
+        
+        <div class="container pt-4 ">
+            <section class="box-simple my-article p-3 mb-4">
+                <div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center">
+                
+    
+                    {% if request_user.is_superuser %}
+                        {% include 'super_user_buttons.html' %}
+                    {% elif request_user.is_staff and not request_user.is_superuser %}
+                        {% include 'admin_buttons.html' %}
+                    {% else %}
+                        {% include 'normal_user_buttons.html' %}
+                    {% endif %}
+                </div>
+    
+                <hr>                                     
+    
+                {% if user_invites %}
+                    <div class="table-responsive mt-5 ">
+                        <!-- <caption>لیست دعوت های شما</caption> -->
+                        <table class="table table-success table-striped mb-5 p-3 rounded">
+                        
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">نام و نام خانوادگی </th>
+                                    <th scope="col">تاریخ ثبت نام</th>
+                                    <th scope="col">اولین خرید</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for user, table in user_invites %}
+                                <tr>
+                                    <th scope="row">{{ forloop.counter|digit_to_persion }}</th>
+                                    <td>{{user.first_name }} {{ user.last_name }}</td>
+                                    <td> {{ user.date_joined|localtime|to_jalali }}</td>
+                                    {% if table.award_tick_table.send_message_parent %}
+                                        <td>✅</td>
+                                    {% else %}
+                                        <td>❌</td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else  %}   
+                    <div class="alert alert-info text-center" role="alert">
+                        <h1>☹️</h1>
+                        <h4 class="alert-heading">شما هنوز هیچ دعوتی ندارید</h4>
+                        <br>
+                        <p>برای این که بتوانید تخفیف های خیلی خوبی بگیرید عضو گیری کرده و با خرید آن ها  شما هم در خرید هاتون تخفیف بگیرید.</p>
+                        <hr>
+                        <p class="mb-0">لینک دعوت خود را با زدن دکمه دریافت لینک دعوت کاربران جدید کپی کرده و به دوستانتان بفرستید.</p>
+                        <br>
+                    </div>
+                {% endif %}
+        
+            </section>
+            
+                </div>
+        </main>
+{% include 'footer.html' %}
+        
+        <!-- {{ user_invites }} -->
+
+{% endblock content %}
+
+

@@ -1,0 +1,576 @@
+  {% load static %} {% load custom_tag %} {% load tz %}
+
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>{% block title %}{% endblock title %}</title>
+      <!-- Bootstrap CSS -->
+      {% block css %} {% endblock css %}
+      {% block js %} {% endblock js %}
+      <link
+        rel="stylesheet"
+        href="{% static 'css/vafadar/moshtari/bootstrap-rtl.min.css'%}"
+      />
+      <link
+        rel="stylesheet"
+        href="{% static 'css/vafadar/moshtari/style.css' %}"
+      />
+      <link
+        rel="stylesheet"
+        href="{% static 'css/vafadar/moshtari/responsive.css' %}"
+      />
+      <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'css/vafadar/moshtari/table.css' %}"
+      />
+
+      <link
+        rel="icon"
+        type="image/png"
+        href="{% static 'css/vafadar/images/site-badge.png' %}"
+      />
+
+      <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'css/vafadar/account/util.css' %}"
+      />
+      <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'css/vafadar/account/main.css' %}"
+      />
+    
+    </head>
+ <body style="font-family: IRANSans, serif, Tahoma;">
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">اطلاعات خوانده شده از حسابداری</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="modalContent" data-user-full-name="{{ request_user.first_name }} {{ request_user.last_name }}">
+            <!-- Your dynamic content goes here -->
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button id="confirm_information_btn" type="button" class="btn btn-success w-100 mb-2">تایید اطلاعات و ثبت مهر</button>
+          <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">بستن</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+        <div class="modal fade" direction="ltr" id="staticModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered  " role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">آمار عملیات مهر زنی</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div direction="rtl" id="total_stamp_count"></div>  
+                <div id="staticModalContent"></div>
+              </div>
+              <div  direction="rtl" class="d-grid gap-2 m-2 ms-4 me-4 " style="display:block">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+
+              </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!--     
+  {% if request.user.id_card_num == '1234567654' and not request.session.message_sent %}
+  <div class="container mt-5 p-5" id="danger-alert">
+      <div class="row">
+          <div class="col-12">
+              <div class="alert alert-danger">
+                
+                  <p>
+                  سلام آقای {{ request.user.first_name }} {{ request.user.last_name }} لطفا بابت قرار داد پشتیبانی مبلغ یک میلیون و هشصد هزار تومان به حساب بهنام محمدی واریز کنید.(طبق قرار داد زمان واریز ۱۱٫۰۱ بود) 
+                  </p>
+                  <hr>
+                  <p>
+                      این پیام به جز شما به هیچ کس دیگری نمایش داده نمیشود
+                  </p>
+              
+                      <button onclick="sentMessageToMe(this)" class="btn btn-success form-control m-2" id="pay-today">امروز میزنم</button>
+                      <button onclick="sentMessageToMe(this)" class="btn btn-success form-control m-2"  id="pay-tomorrow" >فردا میزنم</button>
+
+              </div>
+
+
+          </div>
+
+      </div>  
+  </div>
+  {% endif %} -->
+
+      {% block content %} {% endblock content %}
+
+      <style>
+        @import url("{% static 'css/vafadar/moshtari/fontiran1.css' %}");
+      </style>
+
+
+      <!--===============================================================================================-->
+      <script src="{% static 'css/vafadar/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+      <!--===============================================================================================-->
+      <script src="{% static 'js/vafadar/bartar/bartardigital.js' %}"></script>
+      <script src="{% static 'js/vafadar/bootstrap.bundle.min.js' %}"></script>
+
+      <!-- <script src="{% static 'js/vafadar/jquery-3.7.1.min.js' %}"></script> -->
+      <script src="{% static 'js/vafadar/table.js' %}"></script>
+      <link
+        rel="stylesheet"
+        href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}"
+      />
+
+      <link
+        rel="stylesheet"
+        href="{% static 'css/vafadar/calculator.css' %}"
+      />
+
+      <script>
+        function toEnglishDigits(str) {
+          // convert persian digits [۰۱۲۳۴۵۶۷۸۹]
+          var e = "۰".charCodeAt(0);
+          str = str.replace(/[۰-۹]/g, function (t) {
+            return t.charCodeAt(0) - e;
+          });
+
+          // convert arabic indic digits [٠١٢٣٤٥٦٧٨٩]
+          e = "٠".charCodeAt(0);
+          str = str.replace(/[٠-٩]/g, function (t) {
+            return t.charCodeAt(0) - e;
+          });
+          return str;
+        }
+        const dangerAlert = document.querySelector("#danger-alert");
+        const sentMessageToMe = async function (btn) {
+          const res = await fetch(
+            `/send_message_to_programmer/?when=${btn.getAttribute("id")}`
+          );
+          const data = await res.json();
+
+          console.log(btn.getAttribute("id"));
+          console.log(data);
+          setTimeout((x) => (dangerAlert.style.display = "none"), 500);
+          if (data.status !== 200) return;
+          alert("یک پیام برای اطلاع رسانی به برنامه نویس ارسال شد.");
+        };
+
+        function def_ajax(){
+
+        }
+      </script>
+
+      <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+
+    
+  {% if request_user.is_superuser or request_user.is_staff %}
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+
+        let last_detail_versions;
+        const modalContent = document.getElementById('modalContent')
+        const adminUser = modalContent.dataset.userFullName
+        
+        const button = document.getElementById('oldtypewrite');
+
+        const MyModal = document.getElementById('exampleModalCenter');
+        const modalInstance = new bootstrap.Modal(MyModal);
+        let isClosing = false; // Flag to handle confirmation
+        const growSpinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 8px;"></span>';
+        const confirmButton = document.getElementById('confirm_information_btn');
+
+          button.addEventListener('click', set_stamp);
+
+          async function set_stamp() {
+              button.classList.remove('typewriterNoAnimate');
+              button.classList.add('typewriter');
+              
+              try {
+                  const data = await get_orderDetails();
+                  if (data.error) throw new Error(data.message);
+
+                  last_detail_versions = data.data.last_row_versions
+                  
+                  populateModal(data.data);
+                  $('#exampleModalCenter').modal('show');
+              } catch (error) {
+              button.classList.remove('typewriter');
+              button.classList.add('typewriterNoAnimate');
+                  modalContent.innerHTML = `
+                      <p class="error">${error.message} به پشتیبانی اطلاع دهید.</p>
+                  `;
+                  $('#exampleModalCenter').modal('show');
+              } finally {
+              button.classList.remove('typewriter');
+              button.classList.add('typewriterNoAnimate');
+              }
+          }
+
+          async function get_orderDetails() {
+              const response = await fetch(`/auto_stamp/`);
+              if (!response.ok) throw new Error("🚭 مشکل در ارتباط");
+              return await response.json();
+          }
+
+          function populateModal(data) {
+              const total_stamp_count = document.getElementById('total_stamp_count');
+              modalContent.innerHTML = '';
+              total_stamp_count.innerHTML = '';
+              
+              console.log(data)
+              if (data.response_data.personal_key.length == 0 && data.response_data.company_key.length == 0){
+                   confirmButton.disabled = true;
+                   console.log('error')
+
+              }
+              if (data.response_data.personal_key && data.response_data.personal_key.length > 0) {
+                  const personalKeyLabel = document.createElement('label');
+                  personalKeyLabel.textContent = 'اطلاعات حسابداری شخصی :';
+                  personalKeyLabel.style.fontWeight = 'bold';
+                  modalContent.appendChild(personalKeyLabel);
+
+                  const table = document.createElement('table');
+                  table.className = 'table table-bordered';
+                  table.id = 'personalKeyTable';
+
+                  const thead = document.createElement('thead');
+                  thead.innerHTML = `
+                      <tr>
+                          <th>#</th>
+                          <th>نام و نام خانوادگی</th>
+                            <th>اقلام خریداری شده</th>
+                          <th>تعداد مهر خرید</th>
+                          <th>عکس از مشتری</th>
+        
+                      </tr>
+                  `;
+                  table.appendChild(thead);
+
+                  const tbody = document.createElement('tbody');
+                  data.response_data.personal_key.forEach((user, index) => {
+                      const row = document.createElement('tr');
+                      row.dataset.nationalCode = user.national_code;
+                      row.dataset.personCode = user.person_code;
+                      row.dataset.phoneNumber = user.phone_number;
+                      row.dataset.firstName = user.first_name
+                      row.dataset.lastName = user.last_name
+                      row.innerHTML = `
+                          <td class="fa-num" scope="col">${index + 1}</td>
+                          <td class="fa-num">${user.first_name} ${user.last_name}</td>
+                                <ul >
+                                            ${user.products
+                                          .filter(product => product !== null && product !== undefined) // Filter out null or undefined products
+                                          .map((product, i) => `<li class="fa-num">${i+1 }: ${product}</li>`)
+                                          .join('')}
+                                </ul>
+                            </td>
+                          <td class="fa-num"><input value=${user.stamps_count}></td>
+                          <td><input type="checkbox" name="take_photo_stamp" class="form-check-input" value="False"></td>
+                      `;
+                      tbody.appendChild(row);
+                  });
+                  table.appendChild(tbody);
+                  modalContent.appendChild(table);
+                  modalContent.insertAdjacentHTML("beforeend", "<hr/>");
+
+              } else {
+                  modalContent.insertAdjacentHTML("afterbegin",'<p class="error">هیج مهر جدیدی در حساب شخصی وجود ندارد</p>');
+                  modalContent.insertAdjacentHTML("beforeend", "<hr/>");
+              }
+
+              if (data.response_data.company_key && data.response_data.company_key.length > 0) {
+                  const companyKeyLabel = document.createElement('label');
+                  companyKeyLabel.textContent = 'اطلاعات حسابداری شرکت :';
+                  companyKeyLabel.style.fontWeight = 'bold';
+                  modalContent.appendChild(companyKeyLabel);
+
+                  const table = document.createElement('table');
+                  table.className = 'table table-bordered';
+                  table.id = 'componyKeyTable';
+
+                  const thead = document.createElement('thead');
+                  thead.innerHTML = `
+                      <tr>
+                          <th>#</th>
+                          <th>نام و نام خانوادگی</th>
+                          <th>اقلام خریداری شده</th>
+                          <th>تعداد مهر خرید</th>
+                          <th>عکس از مشتری</th>
+                      </tr>
+                  `;
+                  table.appendChild(thead);
+
+                  const tbody = document.createElement('tbody');
+                  //console.log(data.response_data)
+                  data.response_data.company_key.forEach((user, index) => {
+                      const row = document.createElement('tr');
+                      row.dataset.nationalCode = user.national_code;
+                      row.dataset.personCode = user.person_code;
+                      row.dataset.phoneNumber = user.phone_number;
+                        row.dataset.firstName = user.first_name
+                      row.dataset.lastName = user.last_name
+                      row.innerHTML = `
+                            <td class="fa-num" scope="col">${index + 1}</td>
+                            <td class="fa-num">${user.first_name} ${user.last_name}</td>
+                            <td class="fa-num">
+                                <ul>
+                                          ${user.products
+                            .filter(product => product !== null && product !== undefined) 
+                            .map((product, i) => `<li  class="fa-num" >${i + 1}: ${product}</li>`)
+                            .join('')}
+                            </ul>
+                            </td>
+                        
+                            <td class="fa-num"><input value="${user.stamps_count}"></td>
+                            <td><input type="checkbox" name="take_photo_stamp" class="form-check-input" value="False"></td>
+                        `;
+
+                      tbody.appendChild(row);
+                  });
+                  table.appendChild(tbody);
+                  modalContent.appendChild(table);
+                  modalContent.insertAdjacentHTML("beforeend", "<hr/>");
+
+              } else {
+                  //modalContent.innerHTML = '<p class="error">هیج مهر جدیدی وجود ندارد</p>';
+                  modalContent.insertAdjacentHTML("afterbegin",'<p class="error">هیج مهر جدیدی در حساب شرکت وجود ندارد</p>');
+                  modalContent.insertAdjacentHTML("beforeend", "<hr/>");
+              }
+
+              if (data.incomplete_users.length) {
+                  modalContent.insertAdjacentHTML('beforeend', '<h5 class="mb-2">کاربران با اطلاعات ناقص:</h5>');
+                  const table = document.createElement('table');
+                  table.className = 'table table-bordered';
+
+                  const thead = document.createElement('thead');
+                  thead.innerHTML = `
+                      <tr>
+                          <th>#</th>
+                          <th>نام و نام خانوادگی</th>
+                          <th>حسابداری</th>
+                          <th class="fa-num">کد ملی</th>
+                          <th class="fa-num">موبایل</th>
+                          <th> شماره تکراری با کاربر</th>
+                      </tr>
+                  `;
+                  table.appendChild(thead);
+
+                  const tbody = document.createElement('tbody');
+                  data.incomplete_users.forEach((user, index) => {
+                      const row = document.createElement('tr');
+                      row.innerHTML = `
+                      <td class="fa-num" scope="col">${index + 1}</td>
+                      <td>${user.first_name} ${user.last_name}</td>
+                      <td>${user.db == '' ? "شخصی" : "شرکت"}</td>
+                      <td class="fa-num">${user.national_code ? user.national_code : "ندارد"}</td>
+                      <td class="fa-num">${user.mobile ? user.mobile : "ندارد"}</td>
+                      <td>${user.repeated_phone_number || "ناقص"}</td>
+                      `;
+                      tbody.appendChild(row);
+                  });
+                  table.appendChild(tbody);
+                  modalContent.appendChild(table);
+              }
+
+              if (data.no_order) {
+                  const noOrder = document.createElement('div');
+                  const personalAccountant = data.no_order.personal_key;
+                  const companyAccountant = data.no_order.company_key;
+                  noOrder.innerHTML = `
+                      ${personalAccountant ? `<p>دیتابیس شخصی: ${personalAccountant}</p>` : ''}
+                      ${companyAccountant ? `<p>دیتابیس شرکت: ${companyAccountant}</p>` : ''}
+                  `;
+                  modalContent.appendChild(noOrder);
+              }
+
+          }
+
+          // Event listener for modal closing
+          MyModal.addEventListener('hide.bs.modal', async function(event) {
+              if (!isClosing) {
+                  event.preventDefault(); // Prevent modal from closing
+                  const userConfirmed = confirm("آیا مطمئن هستید که می‌خواهید این پنجره را ببندید؟");
+
+                  if (userConfirmed) {
+                      isClosing = true;
+                      modalInstance.hide();
+                  }
+              }
+          });
+          MyModal.addEventListener('hidden.bs.modal', function() {
+          isClosing = false;
+          });
+
+          // Get data from tables 
+          
+      const personalKeyTableExists = document.getElementById('personalKeyTable');
+      const companyKeyTableExists = document.getElementById('companyKeyTable');
+      confirmButton.addEventListener('click', async function() {
+          
+
+          const personalKeyData =   collectTableData('personalKeyTable');
+          const companyKeyData = collectTableData('componyKeyTable');
+          
+
+          if (!personalKeyData || !companyKeyData ) return;
+          const payload = {
+              personal_key: personalKeyData,
+              company_key: companyKeyData,
+              admin_user: adminUser,
+              last_detail_versions,
+          };
+
+          try {
+              const response = await sendPostRequest('/auto_stamp/', payload);
+              confirmButton.innerHTML = "<span> در حال انجام</span>" + growSpinner;
+              if (!response.ok) throw new Error('به پشتیبانی خبر اطلاع بدید مشکلی پیش آمده!!');
+              const responseData = await response.json()
+
+              const data = await responseData.data
+              //console.log(responseData)
+              isClosing = true;
+              modalInstance.hide();
+              let totalStampsCount = 0;
+              let totalPhotoStamps = 0;
+              let newRegisterCount = 0;
+              data.forEach(item => {
+                      // Convert stamps_count to a number (if it's a string) and add it to the total
+                      totalStampsCount += Number(item.stamps_count) || 0;
+                      
+                      // Add take_photo_stamp to the total
+                      totalPhotoStamps += item.take_photo_stamp || 0;
+                      
+                      // Increment the newRegisterCount if new_register is true
+                      if (item.new_register) {
+                          newRegisterCount++;
+                      }
+                  });
+
+
+                const tableHTML = `
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th>تعداد ثبت نام‌ها</th>
+                                <th>تعداد مهر‌های زده‌شده</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>${newRegisterCount}</td>
+                                <td>${totalStampsCount + totalPhotoStamps}</td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                `;
+
+                // Insert the table into the modal content
+                document.getElementById('staticModalContent').innerHTML = tableHTML;
+
+                // Show the modal
+                const modal = new bootstrap.Modal(document.getElementById('staticModal'));
+                modal.show();
+              
+              
+
+          } catch (error) {
+              console.error('Error:', error.message);
+              confirmButton.innerHtml = 'تایید اطالاعات و ثبت مهر'
+              alert('Error: ' + error.message);
+              isClosing = true;
+              modalInstance.hide();
+            
+
+          } finally {
+            confirmButton.innerHTML = 'تایید اطالاعات و ثبت مهر'
+          }
+      });
+
+      function collectTableData(tableId) {
+          const table = document.getElementById(tableId);
+          if (!table) return -1
+          const rows = table.querySelectorAll('tbody tr');
+          const data = [];
+          let error = false
+
+          
+          rows.forEach(row => {
+              const first_name = row.dataset.firstName || ''
+              const last_name = row.dataset.lastName || ''
+              const full_name = `${first_name} ${last_name}`
+              const stamps_count = row.querySelector('input').value
+              const take_photo_stamp = row.querySelector('input[type="checkbox"]').checked ? 1 : 0;
+              const national_code = row.dataset.nationalCode || ''
+              const person_code = row.dataset.personCode || ''; // Assuming `person_code` is stored in a data attribute
+              const phone_number = row.dataset.phoneNumber || ''; // Assuming `phone_number` is stored in a data attribute
+              // Check if the stamps_count is not a number
+              const stamps_count_input = row.querySelector('input');
+
+              if (isNaN(stamps_count) || stamps_count === '' || !/^\d+$/.test(stamps_count)) {
+                alert(`تعداد مهر فقط میتواند عدد باشد => ${full_name} `);
+                stamps_count_input.focus(); // Set focus back to the input with the error
+                error = true;
+                return false; // Exit the function early if there's an error
+              }
+              if (Number(stamps_count) > 9){
+                alert(`تعداد مهر هاباید کمتر یا مساوی 9 باشد => ${full_name} `);
+                  stamps_count_input.focus(); // Set focus back to the input with the error
+                  error = true;
+                  return false; 
+              }
+              data.push({
+                  first_name,
+                  last_name,
+                  national_code,
+                  person_code,
+                  phone_number,
+                  stamps_count,
+                  take_photo_stamp
+              });
+          });
+          console.log('data', data)
+          if (error) return false
+          return data;
+      }
+
+      async function sendPostRequest(url, payload) {
+          return await fetch(url, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                
+              },
+              body: JSON.stringify(payload)
+              
+          });
+      }
+
+
+      });
+      </script>
+  {% endif %}
+
+
+
+    </body>
+  </html>
+
+
+

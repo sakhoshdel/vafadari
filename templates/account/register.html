@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+	ثبت نام |‌ سیستم وفاداری مشتریان برتر دیجیتال
+{% endblock %}
+{% block js %} 
+      <script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+
+{% endblock js %}
+
+
+	{% block content %}	
+	{% include 'header.html' %}
+
+
+	<link rel="stylesheet" type="text/css" href="{%static 'css/vafadar/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/fonts/iconic/css/material-design-iconic-font.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/vendor/css-hamburgers/hamburgers.min.css' %}">
+
+
+
+	<main style=" font-family:  IRANSans , serif, Tahoma;">
+
+
+			<div class="container text-center"> 
+				{% if request_user.is_staff and not request_user.is_superuser %}		
+				<div class="row pt-4 mt-4">
+					<div class="col-12">
+						<section class="box-simple my-article p-3 mb-4">
+							<!--admin controls:-->
+							<div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center">
+								{% include 'admin_buttons.html'%}
+		
+							</div>
+		
+																		
+		
+						</section>
+					</div>
+		
+				</div>
+				{% elif request_user.is_superuser %}
+			
+					<div class="row pt-4 mt-4">
+						<div class="col-12">
+							<section class="box-simple my-article p-3 mb-4">
+								<!--admin controls:-->
+								<div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center">
+									{% include 'super_user_buttons.html'%}
+								</div>
+					
+																			
+					
+							</section>
+						</div>
+					
+					</div>
+				
+				{% endif %}
+
+					<div class="container pt-4 d-flex align-items-center justify-content-center" >
+							<div class="wrap-login100 mb-4 blog-article login-form mw-100" style="text-align:right; direction: ltr;">
+								<form class="login100-form" method="post"  action="/register/?ref={{ param }}">
+									{% csrf_token %}
+									<span class="login100-form-title p-b-26">
+										ثبت نام
+									</span>
+				
+									<span class="login100-form-title  p-b-10">
+										<i class="zmdi zmdi-account-circle" style="color: #007bff"></i>
+									</span>
+
+									{% if parent_user %}
+									<h5 style="font-weight: 600;
+									border-right: 4px solid #fb8333;
+									padding-right: 5px;
+									line-height: 1.6; margin-bottom: 30px; margin-top: 0; direction: rtl;">معرف شما :‌  {{ parent_user }}</h5>
+									{% else %}
+									
+										{% if not request_user.is_staff %}
+											<blockquote class="blockquote mb-4">
+												<p class="mb-0 text-black " style="font-size: 14px; text-align: right;" >اگر معرف دارید حتما از لینک ارسالی از معرف خود استفاده کنید</p>
+											</blockquote>
+										{% endif %}
+
+									{% endif %}
+
+									{% for error in form.non_field_errors %}
+									<span class="error">{{ error }}</span>
+									{% endfor %}
+			<!-- 										
+									<span class="login100-form-title p-b-48">
+										<i class="zmdi zmdi-font"></i>
+									</span> -->
+									<!-- <p style="color: red;" id="phone_number-error"></p>
+									<p style="color: red;" id="id_card_num_error"></p>
+				
+									<p style="color: red;" id="email-error"></p>
+				-->
+				
+									
+									<div  {% if form.first_name.errors %} class="if-error" {% else %} class="wrap-input100 validate-input" {% endif%}  data-validate = "Enter first_name">
+										{{ form.first_name }}
+										{% for error in form.first_name.errors %}
+										<span class="error">{{ error }}</span>
+										{% endfor %}
+										<span class="focus-input100-login" placeholder=": نام"></span>
+									</div>
+				
+									<div {% if form.last_name.errors %} class="if-error" {% else %} class="wrap-input100 validate-input" {% endif%}  data-validate="Enter last_name">
+				
+										{{ form.last_name }}
+										{% for error in form.last_name.errors %}
+											<span class="error">{{ error }}</span>	
+											{% endfor %}
+										<span class="focus-input100-login" placeholder=": نام خانوادگی"></span>
+									</div>
+				
+									<div {% if form.id_card_num.errors %} class="if-error" {% else %} class="wrap-input100 validate-input" {% endif%}  data-validate="Enter id_card_num">
+				
+										{{ form.id_card_num }}
+										{% for error in form.id_card_num.errors %}
+										<span class="error">{{ error }}</span>
+											{% endfor %}
+										<span class="focus-input100-login" placeholder=": کد ملی"></span>
+									</div>
+									
+									<div {% if form.phone_number.errors %} class="if-error" {% else %} class="wrap-input100 validate-input" {% endif%}  data-validate="Enter phone_number">
+				
+										{{ form.phone_number }}
+										{% for error in form.phone_number.errors %}
+										<span class="error">{{ error }}</span>
+											{% endfor %}
+										<span class="focus-input100-login" placeholder=": شماره تلفن"></span>
+									</div>
+									<div {% if form.birth_date.errors %} class="if-error" {% else %} class="wrap-input100 validate-input" {% endif%}  data-validate="Enter birth date">
+				
+										{{ form.birth_date }}
+										{% for error in form.birth_date.errors %}
+										<span class="error">{{ error }}</span>
+											{% endfor %}
+										<span class="focus-input100-login" placeholder=": تاریخ تولد"></span>
+									</div>
+				
+									<div {% if form.email.errors %} class="if-error" {% else %} class="wrap-input100" {% endif%} >
+				
+										{{ form.email }}
+										{% for error in form.email.errors %}
+										<span class="error">{{ error }}</span>
+											{% endfor %}
+										<span class="focus-input100-login" placeholder=": (اختیاری)ایمیل"></span>
+									</div>
+													
+									<div>
+										
+									</div> 	
+									{% if request_user.is_staff %}
+									<div class="form-check form-switch mb-4">
+										{{ form.send_otp }}
+										<label class="form-check-label" style="color:#070707;" for="flexCheckDefault">
+										  ثبت نام با تایید پیامکی
+										</label>
+									  </div>
+									{% endif %}
+										<!-- {% for error in form.send_otp.errors %}
+										<span class="error">{{ error }}</span>
+											{% endfor %}
+										<span class="focus-input100-login" placeholder=""></span> -->
+									<!-- <div class="wrap-input100 validate-input" >
+				
+										{{ form.password }}
+										<span class="focus-input100" placeholder="پسورد"></span>
+									</div> -->
+				
+				
+				
+									<div class="container-login100-form-btn mb-4">
+										<div class="wrap-login100-form-btn">
+											<div class="login100-form-bgbtn"></div>
+											<button type="submit" value="Submit" class="login100-form-btn btn-green">
+												تایید
+											</button>
+				
+										</div>
+									</div>
+
+									<div class="container-login100-form-btn">
+										<div class="wrap-login100-form-btn">
+											<div class="login100-form-bgbtn"></div>
+											<a  href="/" class="login100-form-btn btn-blue">
+												ورود 
+											</a>
+				
+										</div>
+									</div
+				>
+								</form>
+							</div>
+		
+					</div>
+			</div>
+		
+
+	
+		<div id="dropDownSelect1"></div>
+		
+	</main>
+
+	
+	{% include 'footer.html' %}
+	{% endblock content %}
+

@@ -1,0 +1,557 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tag %}
+{% load tz %}
+
+{% block title %}
+    پروفایل {{ user.first_name }} {{ user.last_name }} | سیستم وفاداری مشتریان برتر دیجیتال
+{% endblock title %}
+
+{% block css %}
+        <style>
+            body{margin-top:20px;
+                background:#eee;
+                }
+                
+                .profile-widget {
+                position: relative;
+                }
+                .profile-widget .image-container {
+                background-size: cover;
+                background-position: center;
+                padding: 190px 0 10px;
+                }
+                .profile-widget .image-container .profile-background {
+                width: 100%;
+                height: auto;
+                }
+                .profile-widget .image-container .avatar {
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                margin: 0 auto -60px;
+                display: block;
+                }
+                .profile-widget .details {
+                padding: 50px 15px 15px;
+                text-align: center;
+                }
+                
+                /* Component: Mini Profile Widget */
+                .mini-profile-widget .image-container .avatar {
+                width: 180px;
+                height: 180px;
+                display: block;
+                margin: 0 auto;
+                border-radius: 50%;
+                background: white;
+                padding: 4px;
+                border: 1px solid #dddddd;
+                }
+                .mini-profile-widget .details {
+                text-align: center;
+                }
+                
+                /* Component: Panel */
+                .panel {
+                border-radius: 0;
+                margin-bottom: 30px;
+                }
+                .panel.solid-color {
+                color: white;
+                }
+                .panel .panel-heading {
+                border-radius: 0;
+                position: relative;
+                }
+                .panel .panel-heading > .controls {
+                position: absolute;
+                right: 10px;
+                top: 12px;
+                }
+                .panel .panel-heading > .controls .nav.nav-pills {
+                margin: -8px 0 0 0;
+                }
+                .panel .panel-heading > .controls .nav.nav-pills li a {
+                padding: 5px 8px;
+                }
+                .panel .panel-heading .clickable {
+                margin-top: 0px;
+                font-size: 12px;
+                cursor: pointer;
+                }
+                .panel .panel-heading.no-heading-border {
+                border-bottom-color: transparent;
+                }
+                .panel .panel-heading .left {
+                float: left;
+                }
+                .panel .panel-heading .right {
+                float: right;
+                }
+                .panel .panel-title {
+                font-size: 16px;
+                line-height: 20px;
+                }
+                .panel .panel-title.panel-title-sm {
+                font-size: 18px;
+                line-height: 28px;
+                }
+                .panel .panel-title.panel-title-lg {
+                font-size: 24px;
+                line-height: 34px;
+                }
+                .panel .panel-body {
+                font-size: 13px;
+                }
+                .panel .panel-body > .body-section {
+                margin: 0px 0px 20px;
+                }
+                .panel .panel-body > .body-section > .section-heading {
+                margin: 0px 0px 5px;
+                font-weight: bold;
+                }
+                .panel .panel-body > .body-section > .section-content {
+                margin: 0px 0px 10px;
+                }
+                .panel-white {
+                border: 1px solid #dddddd;
+                }
+                .panel-white > .panel-heading {
+                color: #333;
+                background-color: #fff;
+                border-color: #ddd;
+                }
+                .panel-white > .panel-footer {
+                background-color: #fff;
+                border-color: #ddd;
+                }
+                .panel-primary {
+                border: 1px solid #dddddd;
+                }
+                .panel-purple {
+                border: 1px solid #dddddd;
+                }
+                .panel-purple > .panel-heading {
+                color: #fff;
+                background-color: #8e44ad;
+                border: none;
+                }
+                .panel-purple > .panel-heading .panel-title a:hover {
+                color: #f0f0f0;
+                }
+                .panel-light-purple {
+                border: 1px solid #dddddd;
+                }
+                .panel-light-purple > .panel-heading {
+                color: #fff;
+                background-color: #9b59b6;
+                border: none;
+                }
+                .panel-light-purple > .panel-heading .panel-title a:hover {
+                color: #f0f0f0;
+                }
+                .panel-blue,
+                .panel-info {
+                border: 1px solid #dddddd;
+                }
+                .panel-blue > .panel-heading,
+                .panel-info > .panel-heading {
+                color: #fff;
+                background-color: #2980b9;
+                border: none;
+                }
+                .panel-blue > .panel-heading .panel-title a:hover,
+                .panel-info > .panel-heading .panel-title a:hover {
+                color: #f0f0f0;
+                }
+                .panel-light-blue {
+                border: 1px solid #dddddd;
+                }
+                .panel-light-blue > .panel-heading {
+                color: #fff;
+                background-color: #3498db;
+                border: none;
+                }
+                .panel-light-blue > .panel-heading .panel-title a:hover {
+                color: #f0f0f0;
+                }
+                .panel-green,
+                .panel-success {
+                border: 1px solid #dddddd;
+                }
+                .panel-green > .panel-heading,
+                .panel-success > .panel-heading {
+                color: #fff;
+                background-color: #27ae60;
+                border: none;
+                }
+                .panel-green > .panel-heading .panel-title a:hover,
+                .panel-success > .panel-heading .panel-title a:hover {
+                color: #f0f0f0;
+                }
+                .panel-light-green {
+                border: 1px solid #dddddd;
+                }
+                .panel-light-green > .panel-heading {
+                color: #fff;
+                background-color: #2ecc71;
+                border: none;
+                }
+                .panel-light-green > .panel-heading .panel-title a:hover {
+                color: #f0f0f0;
+                }
+                .panel-orange,
+                .panel-warning {
+                border: 1px solid #dddddd;
+                }
+                .panel-orange > .panel-heading,
+                .panel-warning > .panel-heading {
+                color: #fff;
+                background-color: #e82c0c;
+                border: none;
+                }
+                .panel-orange > .panel-heading .panel-title a:hover,
+                .panel-warning > .panel-heading .panel-title a:hover {
+                color: #f0f0f0;
+                }
+                .panel-light-orange {
+                border: 1px solid #dddddd;
+                }
+                .panel-light-orange > .panel-heading {
+                color: #fff;
+                background-color: #ff530d;
+                border: none;
+                }
+                .panel-light-orange > .panel-heading .panel-title a:hover {
+                color: #f0f0f0;
+                }
+                .panel-red,
+                .panel-danger {
+                border: 1px solid #dddddd;
+                }
+                .panel-red > .panel-heading,
+                .panel-danger > .panel-heading {
+                color: #fff;
+                background-color: #d40d12;
+                border: none;
+                }
+                .panel-red > .panel-heading .panel-title a:hover,
+                .panel-danger > .panel-heading .panel-title a:hover {
+                color: #f0f0f0;
+                }
+                .panel-light-red {
+                border: 1px solid #dddddd;
+                }
+                .panel-light-red > .panel-heading {
+                color: #fff;
+                background-color: #ff1d23;
+                border: none;
+                }
+                .panel-light-red > .panel-heading .panel-title a:hover {
+                color: #f0f0f0;
+                }
+                .panel-pink {
+                border: 1px solid #dddddd;
+                }
+                .panel-pink > .panel-heading {
+                color: #fff;
+                background-color: #fe31ab;
+                border: none;
+                }
+                .panel-pink > .panel-heading .panel-title a:hover {
+                color: #f0f0f0;
+                }
+                .panel-light-pink {
+                border: 1px solid #dddddd;
+                }
+                .panel-light-pink > .panel-heading {
+                color: #fff;
+                background-color: #fd32c0;
+                border: none;
+                }
+                .panel-light-pink > .panel-heading .panel-title a:hover {
+                color: #f0f0f0;
+                }
+                .panel-group .panel {
+                border-radius: 0;
+                }
+                .panel-group .panel + .panel {
+                margin-top: 0;
+                border-top: 0;
+                }
+                
+ 
+                .bg2 {
+                background-image: url('{% static "css/vafadar/images/bartar.jpeg" %}');
+                }
+                
+                
+                
+                
+               
+        </style>
+{% endblock css %}
+{% block content %}
+    {% include 'header.html' %}
+    
+    
+    <main>
+        <div class="container pt-4 mt-5 mb-5">
+            <div class="row">
+                <div class="col-sm-12 ">
+                    <div class="box-simple my-article p-3 mb-4">
+                        <div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center">
+                          
+                            {% if request_user.is_superuser %}
+                                {% include 'super_user_buttons.html' %}
+                            {% elif request_user.is_staff and not request_user.is_superuser %}
+                                {% include 'admin_buttons.html' %}
+                            {% else %}
+                                {% include 'normal_user_buttons.html' %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="box-simple panel panel-white profile-widget">
+                        <div class="row mb-5">
+                            <div class="col-sm-12">
+                                <div class="image-container bg2">  
+                                    <img src="{% static 'css/vafadar/images/anon.jpeg' %}" class="avatar" alt="avatar"> 
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="details">
+                                    <h4 class="pb-2 mb-3">{{ user.first_name }} {{ user.last_name }} </h4>
+                                  
+                                    <div class="mg-top-10">
+                                        <a href="/change_phone/{{ user.referral_code }}" class="btn btn-blue">تغییر شماره تلفن</a>
+                                        <a href="/change_password/{{ user.referral_code }}" class="btn btn-green">تغییر رمز</a>
+                                    </div>
+                                </div>
+                            </div>
+            
+                        <!-- </div> -->
+                    </div>
+                    <!-- <div class="box-simple my-article p-3 mb-4"> -->
+                        <div class="row">
+         
+                        <div class="col-sm-12">
+                            
+                                <div class="card m-4 p-3">
+                                  <div class="card-body">
+                                    <div class="row">
+                                      <div class="col-sm-3">
+                                        <div class="mb-0 fw-bold ">نام و نام خانوادگی 
+                                        </div>
+                                      </div>
+                                      <div class="col-sm-9">
+                                        <div class="text-muted mb-0">{{ user.first_name }} {{ user.last_name }}</div>
+                                      </div>
+                                    </div>
+                                    <hr>
+
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                          <div class="mb-0 fw-bold">کد ملی</div>
+                                        </div>
+                                        <div class="col-sm-9">
+                                          <div class="text-muted mb-0 fa-num"> ‌{{ user.id_card_num}}</div>
+                                        </div>
+                                      </div>
+
+                                      <hr>
+                                      <div class="row">
+                                          <div class="col-sm-3">
+                                            <div class="mb-0 fw-bold">تاریخ ثبت نام</div>
+                                          </div>
+                                          <div class="col-sm-9">
+                                            <div class="text-muted mb-0"> ‌{{ user.date_joined|to_jalali_without_hour}}</div>
+                                          </div>
+                                        </div>
+                                        <hr>
+
+                                    <div class="row">
+                                      <div class="col-sm-3">
+                                        <div class="mb-0 fw-bold">شماره موبایل  </div>
+                                      </div>
+                                      <div class="col-sm-9">
+                                        <div class="text-muted mb-0">{{ user.phone_number|phone_number_to_persian }}</div>
+                                      </div>
+                                    </div>
+                                    <hr> 
+                                    <div class="row">
+                                      <div class="col-sm-3">
+                                        <div class="mb-0 fw-bold">تاریخ تولد  </div>
+                                      </div>
+                                      <div class="col-sm-9">
+                                     
+                                        {% if user.birth_date  %}
+                                            {% if user.birth_date_status %}
+                                            <div class="d-flex"> 
+                                                <span class="m-1 d-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-title="{{ user.birth_date|calculate_age }} سال" >
+                                                    {{ user.birth_date|convert_birth_date_to_jalali }}
+                                                  </span>
+                                                  <span class="badge bg-success d-flex align-items-center">تایید شده</span>
+                                            </div>
+                                            {% else %}
+                                              <div class="d-flex">
+                                                <span class="d-flex align-items-center " data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-title="{{ user.birth_date|calculate_age }} سال" >
+                                                  {{ user.birth_date|convert_birth_date_to_jalali }}
+                                                </span>
+                                                  <span class="badge bartar-color-orange  d-flex align-items-center" data-bs-toggle="tooltip"  data-bs-placement="top" data-bs-title="برای تایید، لطفا تصویری از کارت شناسایی خود را از طریق فضای مجازی به برتر دیجیتال بفرستید">در انتظار تایید</span>
+
+                                                {% if request_user.is_staff %}
+                                                          <form class='form-inline' method="post">
+                                                            <button type="submit" class='btn btn-blue mt-2' name="button"  value="birth_date_verification">تایید </button>
+                                                            <button type="submit" class='btn btn-orange mt-2' name="button"  value="del_birth_date">حذف تاریخ تولد</button>
+                                                          </form>
+                                                    {% endif %}
+                                              </div>    
+                                            {% endif %}
+                                              
+                                        {% else %}
+                                                  <form class="form-row" method="post">
+                                                          {% csrf_token %}
+                                                         
+                                                            <div class="form-group col-md-6 mb-2">
+                                                              <div  {% if form.birth_date.errors %} class="form-group col-md-6" {% else %} class="form-group col-md-6" {% endif%} >
+                                                                  {{ form.birth_date }}
+                                                                </div>
+                                                                {% for error in form.birth_date.errors %}
+                                                                <span class="error">{{ error }}</span>
+                                                                {% endfor %}
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+
+                                                              <button type="submit" class="form-group col-md-6 btn btn-blue mb-2">تایید</button>
+                                                            </div>
+                                                      
+                                                   </form>
+                                                   
+                                                  </div>
+                                        {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    {% if user.email %}
+                                    <hr>
+                                    <div class="row">
+                                      <div class="col-sm-3">
+                                        <div class="mb-0 fw-bold">ایمیل</div>
+                                      </div>
+                                      <div class="col-sm-9">
+                                        <div class="text-muted mb-0"> 
+                                                {{ user.email }}</div>
+                                        
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    <hr>
+                                    <div class="row">
+                                      <div class="col-sm-3">
+                                        <div class="mb-0 fw-bold">تعداد کارت های وفاداری</div>
+                                      </div>
+                                      <div class="col-sm-9">
+                                        <div class="text-muted mb-0">‌{{ user_table_count|digit_to_persion }}</div>
+                                      </div>
+                                    </div>
+                         
+                                    <hr> 
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                          <div class="mb-0 fw-bold ">تعداد کاربران معرفی شده (توسط لینک دعوت)</div>
+                                        </div>
+                                        <div class="col-sm-9">
+                                          <div class="text-muted mb-0">{{ invited_users_did_not_first_purchase|digit_to_persion }}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <hr>
+                                    <div class="row">
+                                      <div class="col-sm-3">
+                                        <div class="mb-0 fw-bold ">تعداد مشتریان معرفی شده</div>
+                                      </div>
+                                      <div class="col-sm-9">
+                                        <div class="text-muted mb-0">{{ invited_users_did_firts_purchase|digit_to_persion }}</div>
+                                      </div>
+                                  </div>
+                                  <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                          <div class="mb-0 fw-bold ">تعداد کل مهرهای اخذ شده</div>
+                                        </div>
+                                        <div class="col-sm-9">
+                                          <div class="text-muted mb-0">{{all_stamp_count|digit_to_persion}}</div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                      <div class="col-sm-3">
+                                        <div class="mb-0 fw-bold ">کل تخفیف های استفاده شده تا کنون</div>
+                                      </div>
+                                      <div class="col-sm-9">
+                                        <div class="text-muted mb-0">{{ all_used_discount|number_to_persian }} تومان</div>
+                                      </div>
+                                    </div>
+                                    {% if festival_is_active or festival_is_not_active_and_was_not_done %}
+                                    <hr>
+                                    <div class="bartar-color-green row">
+                                      <div class="col-sm-3">
+                                        <div class="mb-0 fw-bold ">تعداد مهرهای اخذ شده در {{festival.name}}</div>
+                                      </div>
+                                      <div class="col-sm-9">
+                                        <div class="bartar-color-green text-muted mb-0">{% if festival_is_active or festival_is_not_active_and_was_not_done %} 
+                                                                  {{ stamps_in_festival|digit_to_persion }}
+                                                                  {% else %}
+                                                                  اتمام جشنواره
+                                                                  {% endif %}
+                                                                  </div>
+                                      </div>
+                                    </div>
+                                    {% endif %}
+                                    {% if  festival_is_not_active_and_was_not_done and calc_festival_chance_digits %}
+                                    
+                                    <hr>
+                                    <div class="row">
+                                      {% if 'بدون قرعه کشی' in festival_message_content%}
+                                      <div class="bartar-color-green col-sm-3">
+                                        <div class="mb-0 fw-bold ">ردیف شانس</div>
+                                      </div>
+                                      <div class="col-sm-9">
+                                        <div class="bartar-color-green  text-muted mb-0">{{ festival_message_content }}</div>
+                                      </div>
+
+                                      {%elif 'ردیف شانس شما' in festival_message_content%}
+                                      <div class="bartar-color-green col-sm-3">
+                                        <div class="mb-0 fw-bold ">ردیف شانس</div>
+                                      </div>
+                                      <div class=" col-sm-9">
+                                        <div class="bartar-color-green text-muted mb-0">{{ festival_message_content }}</div>
+                                      </div>
+
+                                      {% else %}
+                                      <div class="bartar-color-orange col-sm-3">
+                                        <div class="mb-0 fw-bold ">ردیف شانس</div>
+                                      </div>
+                                      <div class=" col-sm-9">
+                                        <div class="bartar-color-orange text-muted mb-0">{{ festival_message_content }}</div>
+                                      </div>
+
+                                      {% endif %}
+
+                                    </div>
+                                    {% endif %}
+                                  </div>
+               
+                      
+                        </div>
+                      
+                    </div>  
+                
+                        </div>
+        
+        </div>
+        </div>
+    </main>
+            {% include 'footer.html' %}
+{% endblock content %}

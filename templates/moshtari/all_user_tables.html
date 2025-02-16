@@ -1,0 +1,78 @@
+{% extends 'base.html'%}
+{% load static %}
+{% load custom_tag %}
+{% load tz %}
+
+{% block title %}
+    لیست کارت ها |‌ سیستم وفاداری مشتریان برتر دیجیتال
+{% endblock title %}
+
+ 
+
+{% block content %}
+    {% include 'header.html' %}
+
+    <main>
+        <div class="container pt-4">
+            <div class="row">
+                <div class="col-12">
+                    <section class="box-simple my-article p-3 mb-4">
+                        <!--admin controls:-->
+                        <div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center">
+                        
+                            {% if request_user.is_superuser %}
+                                {% include 'super_user_buttons.html' %}
+                            {% elif request_user.is_staff and not request_user.is_superuser %}
+                                {% include 'admin_buttons.html' %}
+                            {% else %}
+                                {% include 'normal_user_buttons.html' %}
+                            {% endif %}
+                        </div>
+
+                        <hr>
+                        {% if all_user_tables %}
+                        <div class="table-response  mt-4">
+                            <table class="table table-success caption-top table-striped mb-5 p-3 rounded">
+                                        <h5 style="font-weight: 600;
+                                        border-right: 4px solid #fb8333;
+                                        padding-right: 5px;
+                                        line-height: 1.6; margin-bottom: 30px; margin-top: 0; direction: rtl; font-weight: bold; color: black;">لیست کارت های وفاداری {{ user.first_name }} {{ user.last_name}}</h5>
+
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">تاریخ صدور</th>
+                                                <th scope="col" >&nbsp;</th>
+                                                
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for table in all_user_tables %}
+                                                <tr>
+                                                    <th scope="row"> کارت شماره {{ forloop.counter|digit_to_persion }} </th>
+                                                    <td> {{ table.created_at|to_jalali_without_hour }}</td>
+                                                    <td><a class="link-primary" href="/table_view/{{ table.user.id_card_num }}/{{table.id}}/">نمایش کارت</a></td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+
+
+                                    </table>
+
+                                </div>
+                        {% endif %}
+         
+                    </section>
+                </div>
+        
+            </div>
+        </div>
+    </main>
+
+
+    {% include 'footer.html' %}
+
+{% endblock content %}
+
+

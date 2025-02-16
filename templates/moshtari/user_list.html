@@ -1,0 +1,563 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tag %}
+{% load tz %}
+
+{% block title %}
+    لیست کاربران | سیستم وفاداری مشتریان برتر دیجیتال
+{% endblock title %}
+
+{% block content %}
+
+
+  <!-- Central Modal Medium Success-->
+    <header>
+
+    <div id="header-main" class="d-none d-lg-flex py-1 bg-white fixed-top" style="border-radius: 0px;">
+        <div class="container overflow-visible">
+            <div class="row align-items-lg-center">
+                <div class="col-lg-2 col-xl-3">
+                    <a target="_blank" class="d-none d-xl-block" href="https://bartardigital.com">
+                        <img width="319" height="51" data-no-lazy="1" style="margin-bottom: 10px" src="{% static '/css/vafadar/images/bartardigital-with-rahati.svg' %}" alt="لوگوی برتر دیجیتال">
+                    </a>
+                    <a class="d-none d-lg-block d-xl-none" target="_blank" href="https://bartardigital.com"><img loading="lazy" style="margin-bottom: 10px" src="/static/css/vafadar/images/bartardigital-logo.svg" width="152" height="49" alt="لوگوی برتر دیجیتال"></a>
+                </div>
+                <div class="col-lg-7 col-xl-6 ">
+                    <div class="input-group search-main m-xl-auto">
+                    <input autocomplete="off" type="search" id="desktop_search" class="form-control" placeholder="نام و نام خانوادگی یا کدملی کاربر را وارد کنید"   value="" name="s"  aria-label="نام و نام خانوادگی یا کد ملی کاربر را وارد کنید" onkeyup="send_request_ajax()">
+                    <button class="btn btn-orange">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                    </svg>
+                    </button>
+                    
+                    
+                    <input type="hidden" name="post_type" value="product"><div class="box-simple search-results p-2" style="display: none"></div>
+                    </div></div>
+        
+            </div>
+
+        </div>
+    </div>
+    <div id="header-menu" class="py-2 pb-lg-1 pt-lg-0 bg-white fixed-top d-lg-none" style="top: 0px;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-4 col-lg-9 col-lg-8 menu-buttons d-inline-flex text-nowrap align-items-center">
+
+
+
+
+                    <span class="d-lg-none bartar-background-orange mobile-menu-bottons" id="mobile-search-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                        </svg>
+                    </span>
+
+                </div>
+
+            
+                <div class="col-4 d-lg-none text-center">
+                    <a target="_blank" href="https://bartardigital.com/">
+                        <img width="103" height="35" data-no-lazy="1" class="mw-100 h-auto" src="{% static '/css/vafadar/images/bartardigital-logo.svg' %}" alt="لوگوی برتر دیجیتال">
+                    </a>
+                </div>
+                <div role="search" method="get" action="" class="mobile-search bg-white py-2 input-group d-lg-none" data-nonce="a5d7f01d98">
+                    <span class="btn times"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                    </svg></span>
+                    <input autocomplete="off" onkeyup="send_request_ajax()" type="search" id="mobiel_search" class="form-control" placeholder="نام یا نام خانوادگی یا کد ملی کاربر را وارد کنید" value="" name="s">
+                    <button type="submit" class="btn btn-orange search" aria-label="product-search-mobile">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                    </svg>
+                    </button>
+                </div>
+        </div>
+        </div>
+    </div>
+    </header>
+
+    <main>
+        <!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="reset-pass-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ریست پسورد</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+      </div>
+    </div>
+  </div>
+</div>
+        <div class="container pt-4">
+            <div class="row">
+                <div class="col-12">
+                    <section class="box-simple my-article p-3 mb-4">
+                        
+                        <div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center mb-4">
+
+
+                            {% if request_user.is_superuser %}
+                                {% include 'super_user_buttons.html' %}
+                            {% elif request_user.is_staff and not user.is_superuser %}
+                                {% include 'admin_buttons.html' %}
+                            {% endif %}
+                        </div>
+                        
+                        <hr>
+
+                        <div class="row u-columns col2-set" id="customer_login">
+
+                            <div class="table_row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive rounded" style="min-height: 300px;">
+             
+                                        <table class="table table-striped table-success text-center table-hover">
+                                        <thead>
+                                            <tr>
+                                                <div>
+
+                                                    <th>#</th>
+                                                    <th scope="col" >نام و نام خانوادگی</th>
+                                                    <th scope="col" >کد ملی</th>
+                                                    <th scope="col" >شماره تلفن</th>
+                                                    <!-- <th scope="col" >وضعیت شماره تلفن</th> -->
+                                                    <th scope="col">
+                                                    <a {% if sort_by == 'register_date' or not sort_by %}style="color: #0d6efd;"{% else %}style="color:black;"{% endif %} href="?sort_by=register_date&asc_register_date={{asc_register_date}}" >
+                                                        
+                                                        <span>
+                                                            تاریخ ثبت نام
+                                                        </span>
+                                                        
+                                            
+                                                        <span> 
+                                                            &#x21f5;                                                   
+                                                        </span>
+                                                    </a>
+                                                </th>
+                                                
+                                                
+                                                   <th scope="col" >
+                                                    <a  {% if sort_by == 'birth_date' %}style="color: #0d6efd;"{% else %}style="color:black;"{% endif %} href="?sort_by=birth_date&birth_date={{birth_date}}" class=" m-0 p-0 ">
+                                                        
+                                                        <span>
+                                                            تاریخ تولد
+                                                        </span>
+                                                        <span> 
+                                                            &#x21f5;                                                   
+                                                        </span>
+                                                    </a>
+                                                </th>
+                                                <th scope="col" >
+                                                    <a  {% if sort_by == 'last_login' %}style="color: #0d6efd;"{% else %}style="color:black;"{% endif %} href="?sort_by=last_login&asc_last_login={{asc_last_login}}" class=" m-0 p-0 ">
+                                                        
+                                                        <span>
+                                                            آخرین ورود
+                                                        </span>
+                                                        <span> 
+                                                            &#x21f5;                                                   
+                                                        </span>
+                                                    </a>
+                                                </th>
+                                                
+                                                <th scope="col">
+                                                    <a  {% if sort_by == 'customers' %}style="color: #0d6efd;"{% else %}style="color:black;"{% endif %} href="?sort_by=customers&asc_customers={{asc_customers}}" class="m-0 p-0 ">
+                                                        
+                                                        <span>
+                                                            مشتریان
+                                                        </span>
+                                                        <span> 
+                                                            &#x21f5;                                                   
+                                                        </span>
+                                                    </a>
+                                                </th>
+                                                <th scope="col" >&nbsp;</th>
+                   
+                                                
+                                            </tr>
+                                        </thead>
+                                            <tbody id="card_table">
+                                            {% for  user in items_page reversed %}
+                                                
+                                                <tr class="alert" role="alert">
+                                                    
+                                                        <!-- <td>
+                                                            <label class="checkbox-wrap checkbox-primary">
+                                                                <input type="checkbox" checked>
+                                                            <span class="checkmark"></span>
+                                                            </label>
+                                                    </td> -->
+                                                    <th class="fa-num" scope="row">{{ forloop.revcounter|add:user_count }}</th>
+                                                    <td > <a target="_blank"  class=" link-body-emphasis  link-offset-2 link-underline link-underline-opacity-0" href="/table_view/{{ user.id_card_num}}/{{ user.cards.last.id }}" > {{ user.first_name }} {{ user.last_name}}</a></td>
+                                                    <td>{{ user.id_card_num|digit_to_persion }}</td>
+                                                    <td style="direction: ltr;">{{ user.phone_number|phone_number_to_persian }}</td>
+
+                                                    <!-- {% if user.is_verified %}
+                                                    <td>✅</td>
+                                                        
+                                                    {% else %}
+                                                        <td >❌</td>
+                                                    {% endif %} -->
+                                                    
+                                                    <!-- {% if user.email %}
+                                                        <td>{{ user.email }} </td>
+                                                    {% else %}
+                                                        <td>-</td>,
+                                                    {% endif %} -->
+                                                
+        
+                                                
+                                                    
+                                                    
+                                            
+                                                    <td><span>‌{{ user.date_joined|localtime|to_jalali }}</span></td>
+                                                    <td>
+                                                        {% if user.birth_date_status and user.birth_date%}
+                                                        <span data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-title={% if user.birth_date  %}"{{ user.birth_date|calculate_age }} سال" {% else %} "-" {% endif %} >
+                                                            
+                                                            {{ user.birth_date|convert_birth_date_to_jalali }}</span>
+                                                            {% elif  not user.birth_date_status and user.birth_date%}
+                                                                <span class="badge bartar-color-orange"> در انتظار تایید </span>
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                    </td>
+
+                                                    {% if user.last_login %}
+                                                        <td><span>‌{{  user.last_login|localtime|to_jalali }}</span></td>
+                                                    {% else %}
+                                                        <td><span>-</span></td>
+                                                    {% endif %}
+
+
+                                                    <td class="fa-num">{{user.customers}}</td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            
+                                                            <button type="button" style="width: 70px; height:25px" class="btn btn-blue  dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            
+                                                                
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                            <li><a class="dropdown-item" href="/last_user_table/{{ user.id_card_num }}" >کارت فعال</a></li>
+                                                            <li><a class="dropdown-item" href="/all_user_tables/{{ user.id_card_num }}" >لیست کارت ها</a></li>
+                                                            <li><a class="dropdown-item" href="/user_invites/{{ user.id_card_num }}" >لیست دعوت ها</a></li>
+                                                            <li><hr class="dropdown-divider"></li>
+                                                            <li><button onclick="resetPass(this)" type="button" class="btn btn-blue reset-pass m-1" data-referral-code="{{ user.referral_code }}" data-bs-toggle="" data-bs-target="#reset-pass-modal">
+                                                                ریست رمز
+                                                            </button></li>
+                                                            <li><a target="_blank" class="btn btn-orange m-1"  href="/profile/{{ user.referral_code }}">پروفایل</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                    <!-- <td><a class="link-primary" href="/last_user_table/{{ user.id_card_num }}" >کارت فعال</a></td>
+                                                    <td><a class="link-primary" href="/all_user_tables/{{ user.id_card_num }}" >لیست کارت ها</a></td>
+                                                    <td><a class="link-primary" href="/user_invites/{{ user.id_card_num }}" >لیست دعوت ها</a></td>
+                                                    <td><button onclick="resetPass(this)" type="button" class="btn btn-primary reset-pass" data-referral-code="{{ user.referral_code }}" data-bs-toggle="" data-bs-target="#reset-pass-modal">
+                                                        ریست رمز
+                                                    </button></td>     -->
+
+                                                    </tr>
+                
+                                            {% endfor %}
+                
+                                        
+                                        </tbody>
+                                        </table>
+                                        {% get_proper_elided_page_range items_page.paginator items_page.number as page_range %} 
+
+                                        {% if items_page.has_other_pages %}
+                                        <nav aria-label="Page navigation example" dir="ltr">
+
+                                            <ul class="pagination justify-content-center">
+                                                {% if items_page.has_previous %}
+                                                <li class="page-item ">
+                                                    <a href="?page={{ items_page.previous_page_number }}&sort_by={{sort_by}}&asc_register_date={{asc_register_date}}&asc_last_login={{asc_register_date}}&asc_customers={{asc_customers}}" class="page-link">&laquo; قبلی</a>
+                                                </li>
+                                                {% endif %}
+                                                {% for page_number in page_range   %}
+                                         
+                                                    {% if items_page.number == page_number %}
+                                                    <li class="page-item active">
+                                                            <span class="page-link">{{ page_number|digit_to_persion }} </span>
+                                                    </li>
+                                                    {% else %}
+                                                        {%  if page_number == items_page.paginator.ELLIPSIS %}
+                                                        <li class="page-item">
+                                                            <span class="page-link">{{ items_page.paginator.ELLIPSIS }}</span>
+                                                        </li>
+                                                        {% else %}
+                                                            <li class="page-item">
+
+                                                                <a href="?page={{ page_number }}&sort_by={{sort_by}}&asc_register_date={{asc_register_date}}&asc_last_login={{asc_register_date}}&asc_customers={{asc_customers}}" class="page-link">
+                                                                    {{ page_number|digit_to_persion }}
+                                                                </a>
+                                                            </li>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    
+                                                    {% if items_page.has_next %}
+                                                    <li class="page-item "></li>
+                                                        <a href="?page={{ items_page.next_page_number }}&sort_by={{sort_by}}&asc_register_date={{asc_register_date}}&asc_last_login={{asc_register_date}}&asc_customers={{asc_customers}}" class="page-link">بعدی &raquo; </a>
+                                                </li>
+                                                    {% endif %}
+
+                                            </ul>
+
+                                              
+
+                                        </nav>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                        </div>
+                
+                    
+                        
+                        </div>
+
+                    </section>
+
+
+                </div>
+        
+        
+            </div>
+
+        </div>
+    </main>
+
+
+{% include 'footer.html' %}
+
+    <script>
+
+ 
+
+        const formatGregorianToJalali = (gregorianDate) => {
+            const g = new Date(gregorianDate);
+
+            const jalaliOptions = { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit',};
+            
+            const jalaliFormatter = new Intl.DateTimeFormat('fa-IR', jalaliOptions);
+
+            const jalaliString = jalaliFormatter.format(g);
+
+            return jalaliString;
+            };
+
+        const formatGregorianToJalaliDate = (gregorianDate) => {
+            const g = new Date(gregorianDate);
+
+            const jalaliOptions = { year: 'numeric', month: 'numeric', day: 'numeric',};
+            
+            const jalaliFormatter = new Intl.DateTimeFormat('fa-IR', jalaliOptions);
+
+            const jalaliString = jalaliFormatter.format(g);
+
+            return jalaliString;
+            };
+
+       
+
+            const create_td = function(i, obj){
+                const birth_date = obj.birth_date
+                const birth_date_status = obj.birth_date_status
+                const date = obj.date_joined;
+                const id_card_num = obj.id_card_num;
+                const phone_number = obj.phone_number;
+                const email = obj.email;
+                const is_verified = obj.is_verified;
+                const first_name = obj.first_name;
+                const last_name = obj.last_name;
+                const referralCode = obj.referral_code
+                const last_card_id = obj.last_card_id
+                const last_login = obj.last_login
+
+                let birth_date_status_output = birth_date_status && birth_date  
+                    ? `<span data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="${obj.age} سال">${formatGregorianToJalaliDate(birth_date)}</span> `  
+                    : (!birth_date_status && birth_date  
+                        ? `<span class="badge bartar-color-orange"> در انتظار تایید </span>`  
+                        : '-'  
+                    ); 
+                            
+                const numOption = { numberingSystem: 'arab',useGrouping: false }
+                const persianPhone = phoneNum => '0' +  obj.phone_number.slice(3,)
+
+                const html =  ` <tr class="alert" role="alert">
+                        <th scope=col >${(i + 1).toLocaleString('fa')}</td>
+                    
+                    <td> <a target="_blank"  class=" bold link-body-emphasis  link-offset-2 link-underline link-underline-opacity-0" href="/table_view/${id_card_num}/${last_card_id}" > ${first_name} ${last_name}</a></td>
+                    <td>${Number(id_card_num).toLocaleString('fa', numOption)} </td>
+
+                    <td style="direction:ltr;">${ '۰' + new Intl.NumberFormat('fa', numOption).format(persianPhone(phone_number))}</td>
+
+
+                        <!-- ${is_verified ? '<td>✅</td> ':'<td>❌</td>'} -->
+
+                        
+
+
+                    <!-- <td>
+                        ${email ? email : '-'}</span>
+                    </td>   -->
+
+                    <td style="direction: ltr;" ><span>${formatGregorianToJalali(date)}</span></td>
+                    <td>
+                        ${birth_date_status_output}
+
+                    </td>
+                    <td style="direction: ltr;" ><span> ${last_login?  formatGregorianToJalali(last_login): "-"}</span></td>
+                    
+                    <td class="fa-num">${obj.customers}</td>
+
+                    <td>
+                        <div class="btn-group">
+                            
+                            <button type="button" style="width: 70px; height:25px" class="btn btn-blue  dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually-hidden">Toggle Dropdown</span>
+                            
+                            </button>
+                            <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/last_user_table/${ id_card_num }" >کارت فعال</a></li>
+                            <li><a class="dropdown-item" href="/all_user_tables/${ id_card_num }" >لیست کارت ها</a></li>
+                            <li><a class="dropdown-item" href="/user_invites/${ id_card_num }" >لیست دعوت ها</a></li>
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li><button onclick="resetPass(this)" type="button" class="btn btn-blue reset-pass m-1" data-referral-code="${referralCode}" data-bs-toggle="" data-bs-target="#reset-pass-modal">
+                                ریست رمز
+                            </button></li>
+                            <li><a target="_blank" class="btn btn-orange m-1"  href="/profile/${referralCode }">پروفایل</a></li>
+
+                            
+                            </ul>
+                        </div>
+                    </td>
+                </tr>`
+
+                return html
+
+                      }
+    
+    const tbody = document.querySelector('tbody')
+    const trs = tbody.querySelectorAll('tr')
+
+    function geInitialList(){
+         trs.forEach(tr => tbody.appendChild(tr))
+    }
+    const send_request_ajax = function (){
+        let idCardNumOrName =  $('#desktop_search').val() || $('#mobiel_search').val()
+
+        // toEnglishDigits come from base.htlm 
+        idCardNumOrName = toEnglishDigits(idCardNumOrName)
+        idCardNumOrName =  Number(idCardNumOrName)? idCardNumOrName.trim(): idCardNumOrName
+        const url = `/ajax_search?id_card_num_or_name=${idCardNumOrName}`
+
+        
+        if ( !idCardNumOrName || [...idCardNumOrName.trim()].length >= 3 ) {
+            
+            if (!idCardNumOrName){
+                geInitialList()
+                return
+            }
+            $.ajax({
+                url:url,
+                method: 'GET',
+                // data: {
+                //     idCardNum: idCardNum
+                // }, 
+                success: function(response) {
+                    console.log(idCardNumOrName);
+                    console.log(response);
+
+                    $('tbody').empty()
+
+                    for (const [i, obj] of response.entries()) {
+                        console.log('html ')
+                        const html  = create_td(i, obj)
+                        
+                        $('tbody').append(html);
+
+                    }
+
+                },
+                error: function(xhr, status, error){
+                    console.error(xhr.responseText);
+
+                },
+            
+            });
+
+        }else{
+            if (idCardNumOrName.trim() && [...idCardNumOrName].length >= 3)($("tbody").children().remove())
+            
+        }
+
+
+    }     
+    
+    /* const cardTable = document.querySelector('#card_table')
+
+    const rows = cardTable.querySelectorAll('tr')
+    const reversedRows = Array.from(rows).reverse();
+    console.log(reversedRows)
+
+    rows.forEach(row => {      
+        row.remove()
+    })
+
+    reversedRows.forEach(row => {
+        cardTable.appendChild(row)
+
+        //  cardTable.insertAdjacentElement('beforeend',  row)
+    }) */
+
+    const resetPass = function(button){
+        const referralCode = button.dataset.referralCode
+        let yes_or_not = confirm("برای ریست رمز تایید کنید.");
+        
+        if (!yes_or_not) return
+        fetch(`/reset_password/?referral_code=${referralCode}`)
+        .then(response=> response.json())
+        .then(data => {
+            
+            const modalBody = document.getElementById('reset-pass-modal').querySelector('.modal-body')
+            data.sms_response_msg === 'ارسال موفق بود'?modalBody.textContent = `رمز کاربر ${data.full_name} ریست شد و یک پیام برایش فرستاده شد.`:
+                 modalBody.textContent = `
+                 پیام برای کاربر فرستاده نشد. باید تغییر رمز را برایش اطلاع دهید.
+                 sms_status : ${sms_status}
+                 ${sms_response_msg}`
+            button.dataset.bsToggle = 'modal'
+            button.onclick = ''
+            button.click()
+            button.onclick = () => resetPass(button);
+            button.dataset.bsToggle = ''
+        })
+    }
+
+
+
+</script>
+
+    
+    <!-- <script src="{% static 'js/vafadar/bartar/bartardigital.js' %}"></script> -->
+
+{% endblock content %}
+
+
+
+
+
+
+
+

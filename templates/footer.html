@@ -1,0 +1,35 @@
+{% load static %}
+
+<footer class="footer-4">
+  <div class="container">
+    <div class="row py-2 justify-content-between">
+      <div class="col-12 col-lg-1 text-center order-lg-1 text-lg-end">
+        <div
+          data-bs-toggle="tooltip"
+          title="برتر دیجیتال - رضایت پس از خرید"
+          data-bs-placement="top"
+        >
+          <img
+            src="{% static 'css/vafadar/images/bartar-logo-black-white.png' %}"
+            alt=""
+          />
+        </div>
+      </div>
+
+      <p style="color: #fff" class="col-12 col-lg-11 text-center text-lg-start">
+        کلیه حقوق این سامانه برای شرکت برتر دیجیتال تکین تجارت (سهامی خاص) محفوظ
+        است © ۱۳۹۵-<span id="toYear"></span>
+      </p>
+    </div>
+  </div>
+</footer>
+<div id="dropDownSelect1"></div>
+<script>
+  const toYearSpan = document.getElementById("toYear");
+
+  const persianYear = new Intl.DateTimeFormat("fa-IR", {
+    year: "numeric",
+  }).format(new Date());
+  toYearSpan.innerHTML = persianYear;
+  
+</script>

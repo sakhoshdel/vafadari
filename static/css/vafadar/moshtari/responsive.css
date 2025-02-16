@@ -1,0 +1,342 @@
+/*Extra small devices (portrait phones, less than 576px)*/
+/*No media query since this is the default in Bootstrap*/
+
+/*Very Small devices (landscape phones, 400px and up)*/
+@media (min-width: 400px) {
+    .search-main input::placeholder, .mobile-search input::placeholder, .subscribe-form input::placeholder, .blog-search input::placeholder{
+        font-size: 14px;
+    }
+    .mobile-search input, .blog-search input {
+        font-size: 14px;
+    }
+    .slider3dcover-title{
+        font-size: 18px !important;
+    }
+    .product-gallery-main{
+        max-width: 60%;
+    }
+    .sale-icons div span{
+        font-size: 12px;
+    }
+}
+/*Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) {
+    .mobile-search input {
+        padding: 2px 10px;
+    }
+    /*.my-article .article-image{*/
+    /*    float: right;*/
+    /*    padding-left: 20px;*/
+    /*}*/
+    .blog-article .article-image{
+        float: right;
+        padding-left: 20px;
+    }
+    .mobile-search {
+        max-width: 540px;
+    }
+    .my-article .continue-reading-btn{
+        max-width: 150px;
+    }
+    .breadcrumb-main .breadcrumb-item:not(.home-link) {
+        padding: 2px 20px 2px 18px;
+    }
+    .contact-us-bar a, .contact-us-bar span{
+        display: unset;
+    }
+    .slider3dcover-title{
+        white-space: nowrap;
+    }
+    .product-gallery-main{
+        max-width: 50%;
+    }
+
+}
+/*Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) {
+    .post-comment button{
+        max-width: 150px;
+    }
+    .comments-user .item-comment .media-body .infos {
+        width: 50%;
+    }
+    .comments-user .item-comment.item-comment-response1 {
+        padding-right: 40px;
+    }
+    .comments-user .item-comment.item-comment-response2 {
+        padding-right: 60px;
+    }
+    .mobile-search {
+        max-width: 720px;
+    }
+    .comment-text{
+        font-size: 14px;
+    }
+    #product-desc-navbar .btn {
+        font-size: 14px;
+    }
+    .product-gallery-main{
+        max-width: 100%;
+    }
+    .product-comments .item-comment .image{
+        margin-bottom: 20px;
+        width: unset;
+    }
+    .product-comments .item-comment{
+        display: flex;
+        flex-direction: row;
+    }
+    /*blog special styles*/
+    .container.blog-special{
+        margin-top: -100px;
+    }
+    /*blog special styles-END*/
+}
+/*Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) {
+    #header-main .col-lg-3 .btn{
+        min-width: 70px;
+    }
+    header #header-menu {
+        top: 65px;
+    }
+    /* main{
+        margin-top: 100px;
+    } */
+    .menu-buttons a{
+        color: #6c757d !important;
+        font-size: 14px  !important;
+        font-weight: bold  !important;
+        background: unset !important;
+    }
+    .menu-buttons a:hover{
+        color: #000 !important;
+    }
+    .menu-buttons a i{
+        position: relative;
+        top: 2px;
+    }
+    .shop-info{
+        color: #6c757d !important;
+    }
+    .shop-info:hover{
+        color: #000 !important;
+    }
+    .main-menu-button:after{
+        content: "";
+        border-left: 1px solid #D9D9D9;
+        padding-left: 20px;
+    }
+    .banner-product .info .link {
+        margin: 0 40px;
+    }
+    .swiper-button-prev, .swiper-button-next{
+        opacity: 0;
+    }
+    .about-cols .my-image{
+        margin: auto;
+        margin-bottom: auto !important;
+    }
+}
+/*Extra large devices - xl (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {
+    .footer-3 .product-footer-list ul li{
+        min-width: 170px;
+    }
+    .search-main{
+        width: 80%;
+        height: 38px;
+    }
+    .product-main-info{
+        position: relative;
+    }
+    .sale-icons{
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        right: 50%;
+        margin-left: -50%;
+        margin-right: -50%;
+    }
+    /*blog special styles*/
+    .container.blog-special{
+        margin-top: -200px;
+    }
+    .container.blog-special .rightSidebar .box-simple{
+        margin-top: 60px;
+    }
+    /*blog special styles-END*/
+}
+/*Extra Extra large devices - xxl (large desktops, 1200px and up)*/
+@media (min-width: 1400px) {
+    .footer-3 .product-footer-list ul li{
+        min-width: 200px;
+    }
+    .post-comment label{
+        font-size: 14px;
+    }
+    .top-menu-section .btn-blue, .top-menu-section .btn-green {
+        width: 150px;
+    }
+    .box-comment-horizontal-side .desc{
+        font-size: 13px;
+    }
+    .box-product-horizontal-side .media-body .title a, .box-blog-horizontal-side .media-body .title a {
+        font-size: 14px;
+    }
+    .box-product-horizontal-side .media-body .star-rating {
+        font-size: 14px;
+    }
+    .box-product-horizontal-side .media-body .info {
+        font-size: 13px;
+    }
+    .widget-title {
+        font-size: 18px;
+    }
+    /*.my-article h1{*/
+    /*    font-size: 22px;*/
+    /*}*/
+    .blog-article h1{
+        font-size: 22px;
+    }
+    .blog-article h2{
+        font-size: 20px;
+    }
+    .blog-article h3, .wide-banner h3{
+        font-size: 18px;
+    }
+    .blog-article h4{
+        font-size: 16px;
+    }
+    .blog-article h5{
+        font-size: 14px;
+    }
+    .comments-user .item-comment .media-body .star {
+        font-size: 12px;
+    }
+    .reply-btn {
+        min-width: 80px;
+    }
+    .box-blog .image .title {
+        font-size: 13px;
+    }
+    .price, .price .old-price {
+        font-size: 16px;
+    }
+    .image-box-text .desc, .swiper-slide .desc {
+        font-size: 16px;
+    }
+    .my-article .btn-orange-outline {
+        font-size: 16px;
+    }
+    .link a {
+        font-size: 14px;
+        min-width: 150px;
+    }
+    .slider3dcover-title{
+        font-size: 20px !important;
+    }
+    #product-spec .accordion-button{
+        font-size: 16px;
+    }
+    #product-spec .accordion-body{
+        font-size: 14px;
+    }
+}
+@media (min-width: 1540px) {
+    #header-main .col-lg-3 .btn{
+        min-width: 150px;
+    }
+    .top-menu-section .btn-blue, .top-menu-section .btn-green {
+        width: 160px;
+    }
+    .footer-3 .product-footer-list ul li{
+        min-width: 220px;
+    }
+    .container {
+        max-width: 1500px;
+    }
+}
+    
+@media (min-width: 576px) and (max-width: 1199.98px){
+    .box-category {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .namads img{
+        max-height: 110px;
+    }
+    .top-menu-section .btn-blue, .top-menu-section .btn-green {
+        width: 90px;
+    }
+}
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    .search-main input::placeholder, .mobile-search input::placeholder, .subscribe-form input::placeholder, .blog-search input::placeholder{
+        font-size: 12px;
+    }
+    .mobile-search input, .blog-search input {
+        font-size: 12px;
+    }
+}
+@media (min-width: 1400px) and (max-width: 1539.98px) {
+    .box-category {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    #product-desc-navbar a:after{
+        display: none;
+    }
+    #product-desc-navbar .btn:nth-child(1){
+        margin-bottom: 10px;
+    }
+    /*product page scrool spy button styles for mobile*/
+    .active-section{
+        background-color: #FB8333 !important;
+        border-color: #FB8333 !important;
+    }
+    .product-gallery-main{
+        position: unset;
+    }
+    .product-gallery-area{
+        position: relative;
+    }
+}
+/*Medium devices (tablets, less than 992px)*/
+@media (max-width: 991.98px) {
+    .mobile-menu-bottons{
+        width: 35px;
+        min-width: 35px;
+        height: 34px;
+        border-radius: 5px;
+        display: flex;
+        display: -ms-flexbox;
+        justify-content: center;
+        align-items: center;
+        color: #fff !important;
+        font-size: 20px;
+        line-height: 0;
+    }
+    .mobile-menu-bottons:not(:first-child){
+        margin-right: 10px;
+    }
+    #mobile-search-button{
+        cursor: pointer;
+    }
+    body.mm-ocd-opened {
+        overflow-y:hidden;
+    }
+    .footer-3 .product-footer-list ul li {
+        margin: 0 auto;
+    }
+    .footer-3 .product-footer-list ul li:last-child{
+    margin-bottom: 10px;
+}
+    .namads{
+        margin-bottom: 10px;
+    }
+}

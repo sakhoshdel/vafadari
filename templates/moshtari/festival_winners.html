@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tag %}
+{% load tz %}
+
+{% block title %}
+    لیست برندگان جشنواره | سیستم وفاداری مشتریان برتر دیجیتال
+{% endblock title %}
+
+{% block content %}
+
+{% include 'header.html' %}
+    <main>
+        <!-- Button trigger modal -->
+
+
+
+        <div class="container pt-4">
+            <div class="row">
+                <div class="col-12">
+                    <section class="box-simple my-article p-3 mb-4">
+                        
+                        <div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center mb-4">
+
+
+ 
+                        {% if request_user.is_superuser %}
+                            {% include 'super_user_buttons.html' %}
+                        {% elif request_user.is_staff and not request_user.is_superuser %}
+                            {% include 'admin_buttons.html' %}
+                        {% else %}
+                            {% include 'normal_user_buttons.html' %}
+                        {% endif %}
+                        </div>
+                        
+                        <hr>
+
+                        <div class="row u-columns col2-set" id="customer_login">
+                            <div class="table_row">
+                                <h5 style="font-weight: 600;
+                                border-right: 4px solid #fb8333;
+                                padding-right: 5px;
+                                line-height: 1.6; margin-bottom: 10px; margin-top: 5px; direction: rtl;">لیست برندگان جشنواره </h5>
+                                <div class="col-md-12">
+                                    <div class="table-responsive rounded">
+                                        <table class="table table-striped table-success text-center table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>نفر</th>
+                                                <th scope="col" >ردیف های شانس </th>
+                                                <th scope="col" >نام و نام خانوادگی</th>
+                                                <th scope="col" >تعداد شانس</th>
+                                                <th scope="col" >شماره موبایل</th>
+                                                <th scope="col">جایزه</th>
+                                  
+        
+                                            </tr>
+                                        </thead>
+                                        <tbody id="card_table">
+
+                                            {% for  winner in festival_winners %}
+                        
+                                            <tr class="alert fa-num" role="alert">
+                                                <th scope="row">{{ forloop.counter|digit_to_persion }}</th>
+                                                <td> {{winner.festival_chance_number_list|split_str_list}}</td>
+                                                <td>{{ winner.user.first_name }} {{ winner.user.last_name}}</td>
+                                                <td>{{ winner.taken_stamps|digit_to_persion }}</td>
+                                                <td style="direction: ltr;">{{ winner.user.phone_number|secret_phone_num }}</td>
+                                                <td>{{ winner.prize }}</td>
+                                            </tr>
+                                            
+                                            {% endfor %}
+                                            
+                                        </tbody>
+                                    </table>
+                                    <button id="show-next-one" onclick="showNextRow()" class="btn btn-blue w-100">نمایش برنده بعدی</button>
+                                    </div>
+                                </div>
+
+                                      
+                        </div>
+
+                    </section>
+
+
+                </div>
+        
+        
+            </div>
+
+        </div>
+    </main>
+
+    <style>
+        .fade-in {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .show {
+            opacity: 1;
+        }
+    </style>
+    <script>
+        const tbody = document.querySelector('tbody');
+        const rows = tbody.querySelectorAll('tr');
+        const showNextBtn = document.getElementById('show-next-one')
+        let currentRow = 1
+        function addDisableToTr() {
+            rows.forEach((tr, i) => {
+                if (i !== 0) {
+                     tr.style.display = 'none'
+                }
+            });
+        }
+
+        function showNextRow() {
+            if (currentRow < rows.length) {
+                
+
+            rows[currentRow].style.display = 'table-row';
+                
+                currentRow++;
+            }
+        
+            if (currentRow === rows.length ) {
+                showNextBtn.style.display = 'none';
+            }
+        }
+        addDisableToTr()    
+
+    </script>
+{% include 'footer.html' %}
+{% endblock content %}

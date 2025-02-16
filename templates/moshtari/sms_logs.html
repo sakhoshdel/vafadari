@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tag %}
+{% load tz %}
+
+{% block title %}
+    لیست پیامک ها | سیستم وفاداری مشتریان برتر دیجیتال
+{% endblock title %}
+
+{% block content %}
+
+
+  <!-- Central Modal Medium Success-->
+    <header>
+
+    <div id="header-main" class="d-none d-lg-flex py-1 bg-white fixed-top" style="border-radius: 0px;">
+        <div class="container overflow-visible">
+            <div class="row align-items-lg-center">
+                <div class="col-lg-2 col-xl-3">
+                    <a target="_blank" class="d-none d-xl-block" href="https://bartardigital.com">
+                        <img width="319" height="51" data-no-lazy="1" style="margin-bottom: 10px" src="{% static '/css/vafadar/images/bartardigital-with-rahati.svg' %}" alt="لوگوی برتر دیجیتال">
+                    </a>
+                    <a class="d-none d-lg-block d-xl-none" target="_blank" href="https://bartardigital.com"><img loading="lazy" style="margin-bottom: 10px" src="/static/css/vafadar/images/bartardigital-logo.svg" width="152" height="49" alt="لوگوی برتر دیجیتال"></a>
+                </div>
+                <div class="col-lg-7 col-xl-6 ">
+                    <div class="input-group search-main m-xl-auto">
+                    <input autocomplete="off" type="search" id="desktop_search" class="form-control" placeholder="نام و نام خانوادگی یا کدملی کاربر را وارد کنید"   value="" name="s"  aria-label="نام و نام خانوادگی یا کد ملی کاربر را وارد کنید" onkeyup="send_request_ajax()">
+                    <button class="btn btn-orange">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                    </svg>
+                    </button>
+                    
+                    
+                    <input type="hidden" name="post_type" value="product"><div class="box-simple search-results p-2" style="display: none"></div>
+                    </div></div>
+        
+            </div>
+
+        </div>
+    </div>
+    <div id="header-menu" class="py-2 pb-lg-1 pt-lg-0 bg-white fixed-top d-lg-none" style="top: 0px;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-4 col-lg-9 col-lg-8 menu-buttons d-inline-flex text-nowrap align-items-center">
+
+
+
+
+                    <span class="d-lg-none bartar-background-orange mobile-menu-bottons" id="mobile-search-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                        </svg>
+                    </span>
+
+                </div>
+
+            
+                <div class="col-4 d-lg-none text-center">
+                    <a target="_blank" href="https://bartardigital.com/">
+                        <img width="103" height="35" data-no-lazy="1" class="mw-100 h-auto" src="{% static '/css/vafadar/images/bartardigital-logo.svg' %}" alt="لوگوی برتر دیجیتال">
+                    </a>
+                </div>
+                <div role="search" method="get" action="" class="mobile-search bg-white py-2 input-group d-lg-none" data-nonce="a5d7f01d98">
+                    <span class="btn times"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                    </svg></span>
+                    <input autocomplete="off" onkeyup="send_request_ajax()" type="search" id="mobiel_search" class="form-control" placeholder="نام یا نام خانوادگی یا کد ملی کاربر را وارد کنید" value="" name="s">
+                    <button type="submit" class="btn btn-orange search" aria-label="product-search-mobile">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                    </svg>
+                    </button>
+                </div>
+        </div>
+        </div>
+    </div>
+    </header>
+
+    <main>
+        <!-- Button trigger modal -->
+
+        <div class="container pt-4">
+            <div class="row">
+                <div class="col-12">
+                    <section class="box-simple my-article p-3 mb-4">
+                        
+                        <div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center mb-4">
+
+
+                            {% if request_user.is_superuser %}
+                                {% include 'super_user_buttons.html' %}
+                            {% elif request_user.is_staff and not user.is_superuser %}
+                                {% include 'admin_buttons.html' %}
+                            {% endif %}
+                        </div>
+                        
+                        <hr>
+
+                        <div class="row u-columns col2-set" id="customer_login">
+
+                            <div class="table_row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive rounded" style="min-height: 300px;">
+             
+                                        <table class="table table-striped table-success text-center table-hover">
+                                        <thead>
+                                            <tr>
+                                                <div>
+
+                                                    <th>#</th>
+                                                    <th scope="col" >نام و نام خانوادگی</th>
+                                                    <th scope="col" >شماره تلفن</th>
+                                                    <th scope="col" >متن پیامک ارسالی</th>
+                                                    <th scope="col" >تاریخ ارسال</th>
+                                                    <th scope="col" >کد ارسال</th>
+                                                    <th scope="col" >سرویس پیامکی</th>
+                                                    <th scope="col" >وضعیت ارسال</th>
+                                                    <!-- <th scope="col" >وضعیت شماره تلفن</th> -->
+                                                    
+                                                  
+                                                </th>
+            
+                                            </tr>
+                                        </thead>
+                                            <tbody id="card_table">
+                                            {% for  sms in sms_logs %}
+                                                
+                                                <tr class="alert" role="alert">
+                                                    
+                                                        <!-- <td>
+                                                            <label class="checkbox-wrap checkbox-primary">
+                                                                <input type="checkbox" checked>
+                                                            <span class="checkmark"></span>
+                                                            </label>
+                                                    </td> -->
+                                                    <th class="fa-num" scope="row">{{ forloop.revcounter }}</th>
+                                                    <td > {{ sms.receviver_full_name }}</td>
+                                                    <td style="direction: ltr;">{{ sms.recevier_phone_number|phone_number_to_persian }}</td>
+                                                    <!-- <td>{{ sms.id_card_num|digit_to_persion }}</td> -->
+                                                     <td> {{sms.message }}</td>
+                                                    <td><span>‌{{  sms.created_at|localtime|to_jalali }}</span></td>
+                                                    <td>{{  sms.status_code }}</td>
+                                                    <td> {{ sms.response_message }} </td> 
+                                                    {% if sms.is_successfull %}
+                                                    <td>✅</td>
+                                                    {% else %}
+                                                        <td >❌</td>
+                                                    {% endif %} 
+                                                    <!-- <td><a class="link-primary" href="/last_user_table/{{ user.id_card_num }}" >کارت فعال</a></td>
+                                                    <td><a class="link-primary" href="/all_user_tables/{{ user.id_card_num }}" >لیست کارت ها</a></td>
+                                                    <td><a class="link-primary" href="/user_invites/{{ user.id_card_num }}" >لیست دعوت ها</a></td>
+                                                    <td><button onclick="resetPass(this)" type="button" class="btn btn-primary reset-pass" data-referral-code="{{ user.referral_code }}" data-bs-toggle="" data-bs-target="#reset-pass-modal">
+                                                        ریست رمز
+                                                    </button></td>     -->
+
+                                                    </tr>
+                
+                                            {% endfor %}
+                
+                                        
+                                        </tbody>
+                                        </table>
+                                     
+                                    </div>
+                                </div>
+                        </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+{% include 'footer.html' %}
+
+{% endblock content %}
+
+
+
+
+
+
+
+

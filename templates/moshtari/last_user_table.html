@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tag %}
+{% load tz %}
+
+{% block title %}
+    اخرین کارت وفاداری |‌ سیستم وفاداری مشتریان برتر دیجیتال
+{% endblock title %}
+
+
+
+{% block content %}
+    {% include 'header.html' %}
+
+    <main>
+        <div class="container pt-4">
+            <div class="row">
+                <div class="col-12">
+                    <section class="box-simple my-article p-3 mb-4">
+                        <!--admin controls:-->
+                        <div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center">
+                        
+
+                        {% if request_user.is_superuser %}
+                            {% include 'super_user_buttons.html' %}
+                        {% elif request_user.is_staff and not request_user.is_superuser %}
+                            {% include 'admin_buttons.html' %}
+                        {% else %}
+                            {% include 'normal_user_buttons.html' %}
+                        {% endif %}
+                        </div>
+
+                                              						
+
+                    </section>
+                </div>
+        
+            </div>
+            <div class="h-100 d-flex align-items-center justify-content-center">
+                <div class="col-12 col-lg-7 u-column2 mb-4">
+
+                    <div class="box-simple p-5 blog-article register-form">
+
+                        <div  style="text-align: center; margin-bottom: 20px;" >
+                            <a >
+                                <img width="150" height="50" src="{% static 'css/vafadar/images/bartardigital-logo.svg' %}" alt="لوگوی برتر دیجیتال">
+                            </a>
+                        </div>
+
+                        <h4 style="color: #4377bf; text-align: center;" >جناب آقای / سرکار خانم : {{ user.first_name}} {{user.last_name }}</h4>
+                        <h4  style="color: #4377bf; margin-bottom: 10px; text-align: center;"> تاریخ صدور : {{ table_created_at|to_jalali_without_hour }}</h3>
+                        <div class="table-responsive">
+                    <table  class="table vertical-heading-table rounded">
+
+                    
+                            {% for key , values in data.items %}
+                                {% if key|split_befor_underscore not in data_key_list %}
+
+                                    <tr id='{{ forloop.counter }}'>
+                                        
+                                        <th 
+                                            {% if values.is_used_date %}
+                                        data-bs-toggle="tooltip" data-bs-placement="top"  data-bs-title="{{ values.is_used_date|to_jalalistamp }}" 
+                                            {% endif %}
+                                        
+                                        style="font-size: 13px; direction: rtl; padding: 1px; box-sizing: border-box;width: 100px; height: 100px;white-space: normal; line-height: 1.2;">
+
+
+                                        
+                                        {% if values.is_used %}
+                                        <p class="text-center "><span style=" text-decoration:line-through red 2px;"><span style="color: black;">جایزه {{ key|number_to_persian }}  تومانی</span> </span>
+                                        </p>
+
+                                        {% else %}
+                                        <p class="text-center" style="color: black;">جایزه {{ key|number_to_persian }}  تومانی
+                                        </p>
+
+                                        {% endif %}
+                                        
+                                            
+                                        </th>
+                                            {% for key , value in values.items %}
+                                                {% if key|split_befor_underscore == 'column'%}
+                                                    {% if value.stamp %}
+                                                    <td style="font-family:  IRANSans , serif, Tahoma;" data-bs-toggle="tooltip" data-bs-placement="top"  
+                                                    data-bs-title="{{ value.reason}}  ( {{ value.date|to_jalalistamp}})
+                                                    
+                                                    {% if request_user.is_staff and  value.admin %}
+                                                    _ توسط 
+                                                    {{ value.admin }} 
+                                                     {% elif request_user.is_staff and  not value.admin %}
+                                                    _ توسط 
+                                                    کاظمی مجد
+                                                     {% endif %}" >
+                                                            <img src="{% static 'css/vafadar/images/back-black.png'%}" alt="مهر" >
+                                                        {%else %}
+                                                            <td></td>
+                                                            
+                                                        </td>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+
+                    </table>
+                </div>
+                    <h3 style="color: #4377bf; text-align: center; margin-top: 40px; font-size: 20px;">کارت تخفیف {{ big_gift|number_to_persian }}  تومانی
+                    </h3>
+
+                    {% if unused_prize %}
+
+                    <div class="alert alert-success mt-4" role="alert"> شما {{ unused_prize|number_to_persian }} تومان جایزه تخفیف دارید!! میتوانید از آن برای تخفیف گرفتن در خرید بعدی تان استفاده نمایید! </div>
+                     {% endif %}   
+                    </div> 
+
+
+                </div> 
+            </div>
+        </div>
+    </main>
+
+    {% include 'footer.html' %}
+
+
+{% endblock content %}
+
+

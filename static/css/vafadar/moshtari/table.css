@@ -1,0 +1,152 @@
+
+.vertical-heading-table {
+    border-collapse: collapse;
+    width: 100%;
+    direction: ltr;
+}
+
+.vertical-heading-table th {
+    white-space: nowrap;
+    background-color: #efefef; /* Header background color */
+    padding: 10px;
+    text-align: center;
+}
+
+.vertical-heading-table th, .vertical-heading-table td {
+
+    width: 100px; /* Set a fixed width for the table cells */
+    height: 100px; /* Set a fixed height for the table cells */
+    /* border: 1px solid #000;  */
+    text-align: center; /* Center the content within the cells */
+    vertical-align: middle;
+    
+    border: 2px solid #000;
+    /* padding: 33px; */
+    text-align: center;
+}
+
+td img {
+
+    width: 30px;
+    height: 30px;
+}
+
+.vertical-heading-table td {
+    vertical-align: middle;
+    background-color: #efefef; /* Data cell background color */
+}
+
+/* .vertical-heading-table tr:nth-child(odd) td {
+    background-color: #f2f2f2; } */
+
+.referral-code {
+    border: 2px solid #4CAF50; /* Green border */
+    padding: 10px; /* Reduce padding to fit the content */
+    background-color: #F7F7F7; /* Light gray background */
+    text-align: center;
+    border-radius: 10px;
+    font-size: 18px;
+    width: 50%;
+    margin: 0 auto;
+    overflow: hidden; /* Hide overflow if necessary */
+}
+
+.referral-code label {
+    font-weight: bold;
+}
+
+.referral-code-value {
+    background-color: #4CAF50; /* Green background for the code */
+    color: #FFFFFF; /* White text on green background */
+    border: 2px solid #4CAF50; /* Matching border */
+    padding: 5px 10px; /* Adjust padding for content */
+    font-family: 'Courier New', monospace;
+    font-size: 15px; /* Reduce font size to fit within the box */
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+
+.copy-message {
+    display: none;
+    background-color: #4CAF50; /* Green background */
+    color: #FFFFFF; /* White text on green background */
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+
+
+#date-div #datetime-span {
+    background: none repeat scroll 0 0 #f8f8f8;
+    border: 1px solid rgb(21, 255, 0);
+    color: #717171;
+    font-size: 13px;
+
+    margin: 0 auto;
+    position: relative; 
+    text-align: center;
+    text-transform: uppercase;
+    top: 0px;
+    left: 0px;
+    display: none;
+    padding: 4px 10px;
+    background-color: #d4f1b8;
+    color: #403e10;
+    font-weight: bold;
+
+  
+    transition-delay: 0s;
+    transition-duration: 0.4s;
+    transition-property: all;
+    transition-timing-function: line;
+  }
+  
+  
+  /* #date-div #datetime-span:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    width: 10px;
+    height: 10px;
+    border-bottom: 1px solid red;
+    border-right: 1px solid red;
+    background: #fff842;
+    left: 50%;
+    margin-left: -5px;
+    -moz-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  
+    transform: rotate(45deg);
+  } */
+
+  #date-div {
+    /* float:left; */
+    position: relative;
+    cursor: pointer;
+  }
+  
+  #date-div:hover #datetime-span {
+    display: block;
+    position: absolute;
+  }
+
+  /* .tooltip-arrow,
+  .red-tooltip + .tooltip > .tooltip-inner {background-color: #f00;} */
+.tooltip-inner {
+    color: #fff;
+    /* background: #0d6ef5; */
+    font-family:  IRANSans , serif, Tahoma;
+    
+}
+/* .tooltip .arrow::before {
+    border-left-color: green;
+  }
+.tooltip.bs-tooltip-top .tooltip-arrow::before { border-top-color: #0d6ef5;  }
+.tooltip.bs-tooltip-left .tooltip-arrow::before { border-left-color: #0d6ef5;  }
+.tooltip.bs-tooltip-bootom .tooltip-arrow::before { border-bottom-color: #0d6ef5; background-color: #0d6ef5; }
+
+ */

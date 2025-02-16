@@ -1,0 +1,3 @@
+2025-02-12 23:00:21,954 - Send message logs - INFO - Error 111 connecting to localhost:6379. Connection refused.
+2025-02-12 23:00:41,050 - Send message logs - INFO - Error 111 connecting to localhost:6379. Connection refused.
+2025-02-12 23:01:00,106 - Send message logs - INFO - Error 111 connecting to localhost:6379. Connection refused.

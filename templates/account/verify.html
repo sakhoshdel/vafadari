@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+	 تایید شماره تلفن |‌ سیستم وفاداری مشتریان برتر دیجیتال
+{% endblock %}
+
+{% block css %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/account/verify.css' %}">
+    <!--===============================================================================================-->	
+    <link rel="icon" type="image/png" href="{% static 'css/vafadar/images/site-badge.png' %}"/>
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!--===============================================================================================-->	
+        <link rel="stylesheet" type="text/css" href="{%static 'css/vafadar/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/fonts/iconic/css/material-design-iconic-font.min.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/vendor/animate/animate.css' %}">
+    <!--===============================================================================================-->	
+        <link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/vendor/css-hamburgers/hamburgers.min.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/vendor/animsition/css/animsition.min.css' %}">
+    <!--===============================================================================================-->
+        <link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/vendor/select2/select2.min.css' %}">
+    <!--===============================================================================================-->	
+        <link rel="stylesheet" type="text/css" href="{% static 'css/vafadar/vendor/daterangepicker/daterangepicker.css' %}">
+
+{% endblock css %}        
+{% block content %}
+    <style>
+        body{
+            height: 100vh;
+        } 
+        .container{
+            height: 100%;
+        }
+    </style>
+
+    {% include 'header.html' %}
+
+    
+    
+    <main>
+        
+        {% if request_user.is_authenticated %}
+        <div class="box-simple my-article p-3 ">
+            <div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center">
+              
+                {% if request_user.is_superuser %}
+                    {% include 'super_user_buttons.html' %}
+                {% elif request_user.is_staff and not request_user.is_superuser %}
+                    {% include 'admin_buttons.html' %}
+                {% else %}
+                    {% include 'normal_user_buttons.html' %}
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        <div class="verification-container container d-flex align-items-center justify-content-center pt-4" style="direction: ltr;">
+
+            <div class="box-simple my-article p-3 mb-4 p-5 text-center" >
+
+            <span class="login100-form-title pb-2">
+                <i class="zmdi zmdi-smartphone-android  animated infinite zmdi-hc-fw wobble " style="color: #007bff"></i>
+            </span>
+
+            <blockquote class="blockquote">
+                <p class="mb-0 text-black">لطفا کد پیامک شده را برای تایید ثبت نام وارد نمایید</p>
+              </blockquote>
+            <form id="verification-form">
+                <div id="code-input-container">
+                    <input id="first_input" class="code-input" type="text" maxlength="1" oninput="moveToNextInput(this)" onkeydown="moveToPreviousInput(this, event)">
+                    <input class="code-input" type="text" maxlength="1" oninput="moveToNextInput(this)" onkeydown="moveToPreviousInput(this, event)">
+                    <input class="code-input" type="text" maxlength="1" oninput="moveToNextInput(this)" onkeydown="moveToPreviousInput(this, event)">
+                    <input class="code-input" type="text" maxlength="1" oninput="moveToNextInput(this)" onkeydown="moveToPreviousInput(this, event)">
+                    <input class="code-input" type="text" maxlength="1" oninput="moveToNextInput(this)" onkeydown="moveToPreviousInput(this, event)">
+                    <input class="code-input" type="text" maxlength="1" oninput="moveToNextInput(this)" onkeydown="moveToPreviousInput(this, event)">
+                </div>
+        
+            <button class="request-button mb-4" id="request-button" onclick="requestCode()">ارسال مجدد</button>
+    
+            </form>
+            <p class="timer" id="timer"></p>
+                    <!-- Success and error message placeholders -->
+            <div id="success-message" style="display: none; color: green;"></div>
+            <div id="error-message" style="display: none; color: red;"></div>
+        </div>
+        </div>
+ 
+        
+        <!-- Success and error message placeholders -->
+        <div id="success-message" style="display: none; color: green;"></div>
+        <div id="error-message" style="display: none; color: red;"></div>
+    </div>
+
+    </main>
+    
+    {% include 'footer.html' %}
+
+
+    
+    <script>
+        let countdown;
+let expirationTime = '{{ TIME_EXPIRETION }}'; 
+let codeRequested = false;
+
+function startCountdown() {
+    const timer = document.getElementById('timer');
+    let seconds = expirationTime;
+    countdown = setInterval(function () {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        const displaySeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : remainingSeconds;
+        timer.textContent = `${minutes}:${displaySeconds}`;
+        if (seconds === 0) {
+            clearInterval(countdown);
+            codeRequested = false;
+            enableRequestButton();
+            timer.textContent = 'کد منقضی شد.کد جدید درخواست کنید';
+        }
+        seconds--;
+    }, 1000);
+}
+
+
+const phone_number = "{{ phone_number }}";
+
+
+
+function requestCode() {
+event.preventDefault();
+if (!codeRequested) {
+codeRequested = true;
+disableRequestButton();
+
+// Send an AJAX request to your Django view using GET method
+fetch(`/send_code/?phn={{ phone_number }}&change_phone={{ change_phone }}&referral_code={{ referral_code }}`, {
+    method: 'GET',
+})
+    .then(response =>{ 
+        const res = response.json()
+        return res})
+        .then(data => {
+        console.log(data)
+        if (data.message === 'Verification code sent successfully') {
+            // Display success message
+            const phoneNumber = "{{ phone_number}}" || "{{ change_phone }}"
+            document.getElementById('success-message').textContent = ` 📲 ☎️ کد با موفقیت به ${phoneNumber} ارسال شد `;
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'block';
+
+            // Start the countdown timer
+            expirationTime = "{{ TIME_EXPIRETION }}"; // Reset expiration time to 120 seconds (2 minutes)
+            startCountdown();
+        } else {
+            // Display error message and hide success message
+            if (data.error.trim() === 'This number does not register') {
+            
+            document.getElementById('error-message').textContent = '⛔ با این شماره ثبت نامی انجام نشده⛔';
+            document.getElementById('success-message').style.display = 'none';
+            document.getElementById('error-message').style.display = 'block';
+            }
+            else if (data.error == `Code sent try after ${expirationTime} seconds`){
+            document.getElementById('error-message').textContent = `کد به شما ارسال شده است اگر کد را دریافت نکرده اید ${expirationTime} ثانیه منتظر بمانید و دوباره تلاش کنید` ;
+            document.getElementById('success-message').style.display = 'none';
+            document.getElementById('error-message').style.display = 'block';
+
+            }
+            else {
+            document.getElementById('error-message').textContent = '❌خطا در ارسال کد❌';
+            document.getElementById('success-message').style.display = 'none';
+            document.getElementById('error-message').style.display = 'block';
+            }
+        }
+})
+    .catch(error => {
+        // Handle errors, e.g., show a generic error message
+        console.error(error)
+        document.getElementById('error-message').textContent = 'خطا در ارسال کد❌';
+        document.getElementById('success-message').style.display = 'none';
+        document.getElementById('error-message').style.display = 'block';
+        console.error('Error:', error);
+    });
+}
+}
+
+
+
+
+function verifyCode() {
+const inputs = document.querySelectorAll('.code-input');
+let code = Array.from(inputs).map(input => input.value).join('');
+
+function toEnglishDigits(str) {
+
+// convert persian digits [۰۱۲۳۴۵۶۷۸۹]
+    var e = '۰'.charCodeAt(0);
+    str = str.replace(/[۰-۹]/g, function(t) {
+        return t.charCodeAt(0) - e;
+    });
+
+    // convert arabic indic digits [٠١٢٣٤٥٦٧٨٩]
+    e = '٠'.charCodeAt(0);
+    str = str.replace(/[٠-٩]/g, function(t) {
+        return t.charCodeAt(0) - e;
+    });
+    return str;
+    }
+
+code = toEnglishDigits(code)
+
+
+if (code.length === 6) {
+if (/^\d{6}$/.test(code)) {
+    // All inputs are filled with digits, send a verification request
+    fetch(`/verify_code/?code=${code}&phone_number={{ phone_number }}&change_phone={{ change_phone }}&referral_code={{ referral_code }}`, {
+        method: 'GET',
+        
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Verification successful, change input color and display a success message
+            for (const input of inputs) {
+                input.style.borderColor = 'green';
+            }
+            document.getElementById('success-message').textContent = '✅موفقیت تایید شد';
+            document.getElementById('success-message').style.display = 'block';
+            document.getElementById('error-message').style.display = 'none';
+
+            // Add a delay before redirecting to the login page
+            setTimeout(() => {
+                const userType = "{{ request_user.is_staff }}"
+                const chnagePhone = "{{ change_phone }}"
+                console.log(userType);
+                if (!userType){ 
+                    window.location.href = '/profile/{{ user.referral_code }}/'; 
+                }else if(userType && chnagePhone){
+                    window.location.href = '/profile/{{ referral_code }}/'; 
+                }
+                else{
+                    window.location.href = '/table_view/{{ user.id_card_num }}/{{last_user_table_id}}';
+                }
+            }, 1000); // Delay for 0.1 second (100 milliseconds)
+        } else {
+            // Verification failed, change input color and display an error message
+            for (const input of inputs) {
+                input.style.borderColor = 'red';
+            }
+            if (data.message == 'No user with this phone number') {
+                document.getElementById('error-message').textContent = '⛔با این شماره ثبت نامی انجام نشده⛔';
+                document.getElementById('error-message').style.display = 'block';
+                document.getElementById('success-message').style.display = 'none';
+            }else if (data.message == 'با این شماره قبلا ثبت نام شده نمیتوانید به این شماره تغییر بدید.'){
+                document.getElementById('error-message').textContent = 'با این شماره قبلا ثبت نام شده نمیتوانید به این شماره تغییر بدید.';
+                document.getElementById('error-message').style.display = 'block';
+                document.getElementById('success-message').style.display = 'none';
+            }
+            else {
+            document.getElementById('error-message').textContent = '😭 ❌کد وارد شده اشتباه است❌';
+            document.getElementById('error-message').style.display = 'block';
+            document.getElementById('success-message').style.display = 'none';
+            }
+        }
+    })
+    .catch(error => {
+        // Handle errors, e.g., show a generic error message
+        console.error('Error:', error);
+    })
+    .finally(() => {
+        // Remove focus from the last input
+        const lastInput = inputs[inputs.length - 1];
+        lastInput.blur();
+    });
+}
+}
+}
+
+// Add an event listener to each input field
+const inputs = document.querySelectorAll('.code-input');
+inputs.forEach(input => {
+input.addEventListener('input', verifyCode);
+});
+
+
+function disableRequestButton() {
+    const button = document.getElementById('request-button');
+    button.disabled = true;
+    button.style.backgroundColor = '#ccc';
+    button.style.cursor = 'not-allowed';
+}
+
+function enableRequestButton() {
+    const button = document.getElementById('request-button');
+    button.disabled = false;
+    button.style.backgroundColor = '#007bff';
+    button.style.cursor = 'pointer';
+}
+
+function moveToNextInput(input) {
+    if (input.value.length === 1) {
+        const nextInput = input.nextElementSibling;
+        if (nextInput) {
+            nextInput.focus();
+        }
+    }
+}
+
+function moveToPreviousInput(input, event) {
+    if (event.keyCode === 8 && input.value.length === 0) {
+        const previousInput = input.previousElementSibling;
+        if (previousInput) {
+            previousInput.focus();
+        }
+    }
+}
+
+// Enable the button when the page loads
+enableRequestButton();
+
+document.addEventListener("DOMContentLoaded", function() {
+// Initial code request
+requestCode();
+disableRequestButton();
+
+// Start the countdown timer
+// startCountdown();
+});
+
+document.getElementById('first_input').focus()
+
+    </script>
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+

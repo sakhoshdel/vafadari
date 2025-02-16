@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tz %}
+{% load custom_tag %}
+
+{% block title %}
+    تغییر شماره موبایل |‌ سیستم وفاداری مشتریان برتر دیجیتال
+{% endblock title %}
+
+{% block css%}
+{% endblock css %}
+
+{% block content %}	
+    {% include 'header.html' %}
+
+    <main class="hv-100  p-2" style="margin: 100px 0 100px 0">
+
+        <div class="container h-100 ">
+            <div class="row h-100 justify-content-center align-items-center">
+                <div class="form-group col-md-12">
+                    <div class="box-simple my-article p-3 mb-4">
+                        <div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center">
+                          
+                            {% if request_user.is_superuser %}
+                                {% include 'super_user_buttons.html' %}
+                            {% elif request_user.is_staff and not request_user.is_superuser %}
+                                {% include 'admin_buttons.html' %}
+                            {% else %}
+                                {% include 'normal_user_buttons.html' %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+                    <div class="box-simple p-5 blog-article login-form mb-3 ">
+                        <form method="post">
+                            <div class="form-group  mb-3">
+                                {% if messages %}
+                        
+                                {% for message in messages %}
+                                
+                                <div class="alert alert-{{ message.tags }}  " role="alert">
+
+                            {{ message|safe }}
+                            </div>
+                                {% endfor %}
+
+                            {% endif %} 
+                            {% if form.non_field_errors %}
+                            <div class="alert alert-warning" role="alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                            {% endif %}
+
+
+                            <label class="mb-1 " for="id_password">رمز :</label>
+                            {{ form.password }}
+
+                            </div>
+                            <div class="form-group mb-3 ">
+                                <label class="mb-1 " for="id_new_phone"> موبایل جدید :</label>
+                                {{ form.new_phone }}
+                                {% for error in form.new_phone.errors %}
+                                    <span class="error">{{ error }}</span>
+                                        {% endfor %}
+                            </div>
+                            
+                            <div class="form-group form-check mb-4 ">
+                                <input onclick="showPass()" type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">نمایش رمز </label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-blue  form-control">تایید شماره موبایل</button>
+                        </form>
+                    </div>
+
+         
+                </div>
+            </div>
+        </div>
+    </main>
+
+        <script>
+            const showPass = function(){
+                const passwordField = document.querySelector('#id_password')
+                passwordField.type === 'password'? passwordField.type='text': passwordField.type = 'password'
+            }
+        </script>
+{% endblock content %}
+
+
+

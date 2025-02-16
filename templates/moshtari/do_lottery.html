@@ -1,0 +1,134 @@
+{% extends 'base.html' %} {% load static %} {% load custom_tag %} {% load tz %}
+{% block title %} قرعه کشی |‌ سیستم وفاداری مشتریان برتر دیجیتال {% endblock title %} {% block css %}
+<style>
+  html,
+  body,
+  .container-table {
+    height: 100%;
+  }
+</style>
+{% endblock css%} {% block content %} {% include 'header.html'%}
+
+<div class="container pt-4 mt-5">
+  <div class="row u-columns col2-set">
+    <div class="col-12">
+      <section class="box-simple my-article p-3 mb-4">
+        <!--admin controls:-->
+        <div
+          class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center"
+        >
+          {% if request_user.is_superuser %}
+           {% include 'super_user_buttons.html' %}
+            {% elif request_user.is_staff and not user.is_superuser %} {% include 'admin_buttons.html' %} {% endif %}
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<div class="h-100 d-flex align-items-center justify-content-center">
+  <div class="row vertical-center-row">
+    <div class="box-simple p-5 blog-article login-form mb-3">
+      <form class="login100-form validate-form" method="post">
+        {% csrf_token %}
+        <span class="login100-form-title p-b-26">
+          قرعه کشی برندگان {{ festival.name }} برتردیجیتال
+        </span>
+
+        {% for error in form.non_field_errors %}
+        <span class="error">{{ error }}</span>
+        {% endfor %}
+
+        <div class="mb-3">
+          <label class="mb-1" for="id_first_winner_number"
+            >ردیف شانس برنده نفر اول :</label
+          >
+          {{ form.first_winner_number }} {% for error in form.first_winner_number.errors %}
+          <span class="error fa-num">{{ error }}</span>
+          {% endfor %}
+        </div>
+
+        <div class="container-login100-form-btn">
+          <div class="wrap-login100-form-btn">
+            <div class="login100-form-bgbtn"></div>
+            <button
+              type="submit"
+              class="login100-form-btn btn-blue"
+              name="button"
+            >
+              محاسبه و نمایش برندگان
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="box-simple p-5 blog-article login-form">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card m-4 p-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <div class="mb-0 fw-bold">تعداد کل مهر های شرکت کنندگان</div>
+                </div>
+                <div class="col-sm-9">
+                  <div class="text-muted mb-0">
+                    {{ festival.all_taken_stamps|digit_to_persion }}
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <div class="mb-0 fw-bold">تعداد کل ردیف های شانس</div>
+                </div>
+                <div class="col-sm-9">
+                  <div class="text-muted mb-0 fa-num">
+                    ‌{{ participiant_stamps}}
+                  </div>
+                </div>
+              </div>
+              <hr />
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <div class="mb-0 fw-bold">تعداد کل شرکت کنندگان</div>
+                </div>
+                <div class="col-sm-9">
+                  <div class="text-muted mb-0 fa-num">
+                    {{ all_participants }}
+                  </div>
+                </div>
+              </div>
+
+              <hr />
+              <div class="row">
+                <div class="col-sm-3">
+                  <div class="mb-0 fw-bold">عدد گام</div>
+                </div>
+                <div class="col-sm-9">
+                  <div class="text-muted mb-0 fa-num">
+                    ‌{{ festival.step_number }}
+                  </div>
+                </div>
+              </div>
+              <hr />
+            </div>
+          </div>
+          <div class="alert alert-warning row">
+            <div class="col-sm-3">
+              <div class="mb-0 fw-bold">توجه</div>
+            </div>
+            <div class="col-sm-9">
+              <div class="text-muted mb-0 fa-num">
+                ردیف های شانس از عدد ۰ تا ‌{{ participiant_stamps_1  }} می باشد.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'footer.html' %} {% endblock content %}

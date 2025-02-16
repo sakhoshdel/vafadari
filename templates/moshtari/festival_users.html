@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tag %}
+{% load tz %}
+
+{% block title %}
+    لیست افراد جشنواره | سیستم وفاداری مشتریان برتر دیجیتال
+{% endblock title %}
+
+{% block content %}
+
+{% include 'header.html' %}
+    <main>
+        <!-- Button trigger modal -->
+
+
+        <div class="container pt-4">
+            <div class="row">
+                <div class="col-12">
+                    <section class="box-simple my-article p-3 mb-4">
+                        
+                        <div class="controls d-flex flex-wrap align-content-center justify-content-around align-items-center mb-4">
+ 
+                        {% if request_user.is_superuser %}
+                            {% include 'super_user_buttons.html' %}
+                        {% elif request_user.is_staff and not request_user.is_superuser %}
+                            {% include 'admin_buttons.html' %}
+                        {% else %}
+                            {% include 'normal_user_buttons.html' %}
+                        {% endif %}
+                        </div>
+                        
+                        <hr>
+                        <div class="row u-columns col2-set" id="customer_login">
+                            {% if each_user_stamps_in_active_festival %}
+                            <div class="table_row">
+                                {% if festival_is_active or festival_is_not_active_and_was_not_done %}
+                                    {% if festival.description_link %}
+                                        <a  target="_blank" href="{{ festival.description_link}}" class="btn btn-blue  w-100 mb-3"> مشاهده شرایط و جوایز {{ festival.name}}</a>
+                                    {% endif %}
+                                {% endif %}
+                                <h5 style="font-weight: 600;
+                                border-right: 4px solid #fb8333;
+                                padding-right: 5px;
+                                line-height: 1.6; margin-bottom: 10px; margin-top: 5px; direction: rtl;">لیست کاربران با بیشترین تعداد مهر در بازه زمانی {{ festival.start_date|to_jalali_without_hour }} تا {{ festival.end_date|to_jalali_without_hour }}
+                            </h5>
+                                <div class="col-md-12">
+                                    <div class="table-responsive rounded">
+                                        <table class="table table-striped table-success text-center table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>رتبه</th>
+                                                <th scope="col" >نام و نام خانوادگی</th>
+                                                <th scope="col" >تعداد مهر</th>
+                                                <th scope="col" >شماره تلفن</th>
+                                  
+        
+                                            </tr>
+                                        </thead>
+                                        <t id="card_table">
+
+                                            {% for  user , stamp_number in each_user_stamps_in_active_festival %}
+                        
+                                         <tr class="alert" role="alert">
+                                            <th scope="row">{{ forloop.counter|digit_to_persion }}</th>
+                                            <td>{{ user.first_name }} {{ user.last_name}}</td>
+                                            <td>{{ stamp_number|digit_to_persion }}</td>
+                                            <td style="direction: ltr;">{{ user.phone_number|secret_phone_num }}</td>
+                                           
+                                            </tr>
+                
+                                            {% endfor %}
+                
+              
+                                        </t   body>
+                                        </table>
+                                    </div>
+                                </div>
+                                    <div class="table_row">
+                                        <h5 class="fa-num" style="font-weight: 600;
+                                        border-right: 4px solid #fb8333;
+                                        padding-right: 5px;
+                                        line-height: 1.6; margin-bottom: 10px; margin-top: 5px; direction: rtl;"> کاربران بایستی حداقل {{ festival.min_stamp }} مهر داشته باشند تا در {{ festival.name }} شرکت نمایند.</h5>
+                                    </div>                
+                                    <a target="_blank" href="https://bartardigital.com/tag/bartardigital-seosonal-lottery/" class="btn btn-blue  w-100 mb-3 mt-3">مشاهده جوایز و برندگان همه قرعه کشی های برتر دیجیتال</a>       
+                                </div>
+
+                            {% else %}
+                            <div class="alert alert-info text-center" role="alert">
+                                <h1>☹️</h1>
+                                <h4 class="alert-heading">هنوز هیچ مهری در طول این جشنواره گرفته نشده </h4>
+                                <br>
+                            </div>
+
+                            {% endif %}
+
+                            
+                    </section>
+
+                </div>
+        
+        
+            </div>
+
+        </div>
+    </main>
+{% include 'footer.html' %}
+{% endblock content %}
